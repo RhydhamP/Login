@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -134,13 +136,17 @@ class HomePage extends ConsumerWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
-                    fontSize: 25)),
+                    fontSize: 27)),
             const SizedBox(
               height: 25,
             ),
             TextFormField(
+              style: TextStyle(fontSize: 18),
               controller: searchController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(),
+                    borderRadius: BorderRadius.circular(35)),
                 hintText: "Search",
                 /* suffix: IconButton(
                       onPressed: () {
@@ -174,11 +180,16 @@ class HomePage extends ConsumerWidget {
                         },
                         title: Text(
                           value[index].name.toString(),
+                          style: TextStyle(fontSize: 17),
                         ),
                         subtitle: Text(
-                            "WS_Code : ${value[index].ws_code.toString()}"),
+                          "WS_Code : ${value[index].ws_code.toString()}",
+                          style: TextStyle(fontSize: 14),
+                        ),
                         trailing: Text(
-                            "M.R.P : -  ${value[index].ws_code.toString()}"),
+                          "M.R.P :-  ${value[index].ws_code.toString()}",
+                          style: TextStyle(fontSize: 13),
+                        ),
                       );
                     },
                     itemCount: value.length);
@@ -188,8 +199,12 @@ class HomePage extends ConsumerWidget {
               height: 25,
             ),
             TextFormField(
+              style: TextStyle(fontSize: 18),
               controller: quantityController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(),
+                    borderRadius: BorderRadius.circular(35)),
                 hintText: "Quantity",
               ),
             ),
@@ -212,7 +227,10 @@ class HomePage extends ConsumerWidget {
                   searchController.clear();
                   quantityController.clear();
                 },
-                child: const Icon(Icons.search_sharp),
+                child: Text(
+                  "Search",
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
             ),
             // addProductBasics.length?
@@ -239,12 +257,48 @@ class HomePage extends ConsumerWidget {
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                               columns: const <DataColumn>[
-                                DataColumn(label: Text("Medicine Name")),
-                                DataColumn(label: Text("MRP")),
-                                DataColumn(label: Text("Quantity")),
-                                DataColumn(label: Text("Available")),
-                                DataColumn(label: Text("TAT")),
-                                DataColumn(label: Text("Delete")),
+                                DataColumn(
+                                    label: Text(
+                                  "Medicine Name",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                                DataColumn(
+                                    label: Text(
+                                  "MRP",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                                DataColumn(
+                                    label: Text(
+                                  "Quantity",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                                DataColumn(
+                                    label: Text(
+                                  "Available",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                                DataColumn(
+                                    label: Text(
+                                  "TAT",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                                DataColumn(
+                                    label: Text(
+                                  "Delete",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )),
                               ],
                               rows: addToListProvider
                                   .asMap()
@@ -253,18 +307,30 @@ class HomePage extends ConsumerWidget {
                                 final index = entry.key;
                                 final result = entry.value;
                                 return DataRow(cells: [
-                                  DataCell(Text(result.Product.name)),
-                                  DataCell(Text(result.Product.mrp.toString())),
-                                  DataCell(Text(result.Availability.wsQuantity
-                                      .toString())),
                                   DataCell(Text(
-                                      result.Availability.wsRes == true
-                                          ? "Available"
-                                          : "Not Available")),
+                                    result.Product.name,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
                                   DataCell(Text(
-                                      result.Availability.wsRes == false
-                                          ? "Contact 9999999999"
-                                          : "Available at Warehouse")),
+                                    result.Product.mrp.toString(),
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                                  DataCell(Text(
+                                    result.Availability.wsQuantity.toString(),
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                                  DataCell(Text(
+                                    result.Availability.wsRes == true
+                                        ? "Available"
+                                        : "Not Available",
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                                  DataCell(Text(
+                                    result.Availability.wsRes == false
+                                        ? "Contact 9999999999"
+                                        : "Available at Warehouse",
+                                    style: TextStyle(fontSize: 15),
+                                  )),
                                   DataCell(ElevatedButton(
                                     child: const Icon(Icons.delete_outline),
                                     onPressed: () {
@@ -301,7 +367,8 @@ class HomePage extends ConsumerWidget {
                           // setState(() {});
                         },
                         child: const Text("Clear All",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16)),
                       )
                     : Container();
               },
@@ -309,7 +376,6 @@ class HomePage extends ConsumerWidget {
           ],
         ),
       ),
-      // ignore: prefer_const_constructors
       drawer: MyDrawer(),
     );
   }

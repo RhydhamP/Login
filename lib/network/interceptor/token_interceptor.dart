@@ -15,4 +15,10 @@ class TokenInterceptor extends Interceptor {
     options.headers.addAll({"Authorization": "Bearer $token"});
     super.onRequest(options, handler);
   }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    // TODO: implement onError
+    super.onError(err, handler);
+  }
 }

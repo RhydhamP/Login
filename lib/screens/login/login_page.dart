@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,11 +66,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           child: Column(
             children: [
               const SizedBox(
-                height: 30.0,
+                height: 80.0,
               ),
               Image.asset("assets/images/Logo.png", fit: BoxFit.cover),
               const SizedBox(
-                height: 20.0,
+                height: 30.0,
               ),
               const Text("Login to MK Retail Experience",
                   style: TextStyle(
@@ -80,9 +82,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     vertical: 16.0, horizontal: 22.0),
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 30.0,
+                    ),
                     TextFormField(
                       controller: provider.email,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(),
+                            borderRadius: BorderRadius.circular(25)),
                         hintText: "Email",
                         labelText: "Email",
                       ),
@@ -96,10 +104,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         provider.email.text = value;
                       },
                     ),
+                    SizedBox(
+                      height: 30.0,
+                    ),
                     TextFormField(
                       obscureText: true,
                       controller: provider.password,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(),
+                            borderRadius: BorderRadius.circular(25)),
                         hintText: "Password",
                         labelText: "Password",
                       ),
