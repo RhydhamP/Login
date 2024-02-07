@@ -6,13 +6,11 @@ class LocalDatabase {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     await prefs.setString(authTokenKey, authTokenValue);
-    return;
   }
 
-  Future<void> getAuthToken() async {
+  Future<String> getAuthToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    prefs.getString(authTokenKey);
-    return;
+    return prefs.getString(authTokenKey)??"";
   }
 }

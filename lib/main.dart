@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/screens/home/home_page.dart';
 import 'package:login/screens/login/login_page.dart';
-import 'package:login/screens/sales/sales_view.dart';
+import 'package:login/screens/sales/salesOrder_view.dart';
 import 'package:login/screens/splash.dart';
 import 'package:login/utils/routes.dart';
 

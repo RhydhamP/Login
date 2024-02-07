@@ -2,9 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:login/utils/constant.dart';
+import 'package:login/local_store/local_database.dart';
 import 'package:login/utils/routes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -22,12 +21,11 @@ class _SplashState extends State<Splash> {
   }
 
   Future navigate() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final String token = prefs.getString(authTokenKey) ?? "";
+    // final String token = prefs.getString(authTokenKey) ?? "";
 
-    // LocalDatabase loData;
-    // String token = loData.getAuthToken();
+    String token = await LocalDatabase().getAuthToken();
 
     print("token==========================$token");
     if (token.isNotEmpty) {

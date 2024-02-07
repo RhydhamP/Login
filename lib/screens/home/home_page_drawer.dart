@@ -2,9 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:login/utils/constant.dart';
+import 'package:login/local_store/local_database.dart';
 import 'package:login/utils/routes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -69,12 +68,12 @@ class MyDrawer extends StatelessWidget {
                 textScaleFactor: 1.2,
               ),
               onTap: () async {
-                final SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
+                // final SharedPreferences prefs =
+                //     await SharedPreferences.getInstance();
 
-                await prefs.setString(authTokenKey, "");
+                // await prefs.setString(authTokenKey, "");
                 // LocalDatabase loData;
-                // loData.setAuthToken("");
+                LocalDatabase().setAuthToken("");
                 Navigator.pushNamed(context, MyRoutes.loginRoute);
               },
             ),
