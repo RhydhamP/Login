@@ -103,8 +103,8 @@ class HomePage extends ConsumerWidget {
   // }
   // }
 
-  TextEditingController searchController = TextEditingController();
-  TextEditingController quantityController = TextEditingController();
+  // TextEditingController searchController = TextEditingController();
+  // TextEditingController quantityController = TextEditingController();
 
   HomePage({super.key});
 
@@ -142,7 +142,7 @@ class HomePage extends ConsumerWidget {
             ),
             TextFormField(
               style: TextStyle(fontSize: 18),
-              controller: searchController,
+              controller: provider.searchController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderSide: BorderSide(),
@@ -156,6 +156,10 @@ class HomePage extends ConsumerWidget {
                       icon: Icon(Icons.clear)) */
               ),
               onChanged: (value) {
+                if (value.isEmpty) {
+                  provider.productListProvider.value = [];
+                  return;
+                }
                 provider.callCheckAvailability(
                     onSuccess: () {}, onFail: () {}, keyWord: value);
               },
@@ -170,7 +174,7 @@ class HomePage extends ConsumerWidget {
                       return ListTile(
                         onTap: () {
                           // print("Pressed");
-                          searchController.text = value[index].name;
+                          provider.searchController.text = value[index].name;
                           // searchController.clear();
                           fillSearchWSCode = value[index].ws_code;
                           // Quantity = productList[index].
@@ -200,7 +204,7 @@ class HomePage extends ConsumerWidget {
             ),
             TextFormField(
               style: TextStyle(fontSize: 18),
-              controller: quantityController,
+              controller: provider.quantityController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderSide: BorderSide(),
@@ -220,12 +224,12 @@ class HomePage extends ConsumerWidget {
                       onSuccess: () {},
                       onFail: () {},
                       ws_code: fillSearchWSCode.toString(),
-                      quantity: quantityController.text,
-                      search_keyword: searchController.text);
+                      quantity: provider.quantityController.text,
+                      search_keyword: provider.searchController.text);
 
                   // print("API sccuess");
-                  searchController.clear();
-                  quantityController.clear();
+                  provider.searchController.clear();
+                  provider.quantityController.clear();
                 },
                 child: Text(
                   "Search",

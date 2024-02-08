@@ -14,7 +14,6 @@ class SalesOrderPage extends ConsumerStatefulWidget {
 
 class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
   String? dropDownValue1 = "Product";
-  String? dropDownValue2;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +39,24 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
             children: [
               Expanded(
                 child: TextFormField(
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      provider.productListProvider.value = [];
+                      return;
+                    }
+                    if (dropDownValue1 == "Product") {
+                      provider.callCheckAvailability(
+                          onSuccess: () {}, onFail: () {}, query: value);
+                    } else if (dropDownValue1 == "SO Number") {
+                      print("SO api caled");
+                      provider.callDateAndSOFilterApi(
+                          onSuccess: () {},
+                          onFail: () {},
+                          searchSO: "$value,so_number");
+                    }
+                    setState(() {});
+                  },
+                  controller: provider.searchController,
                   decoration: InputDecoration(
                       hintText: dropDownValue1 == "Product"
                           ? "Search By Product Name"
@@ -70,6 +87,45 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                 },
               )
             ],
+          ),
+          ValueListenableBuilder(
+            valueListenable: provider.productListProvider,
+            builder: (context, value, child) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {
+                        // print("Pressed");
+                        provider.searchController.text = value[index].name;
+                        // searchController.clear();
+                        provider.productWsCode = value[index].ws_code;
+                        // Quantity = productList[index].
+                        // ref.read(productListProvider.notifier).state = [];
+                        // setState(() {});
+                        provider.productListProvider.value = [];
+
+                        provider.callDateAndProductFilterApi(
+                            onSuccess: () {}, onFail: () {});
+                        // provider.searchController.clear();
+                      },
+                      title: Text(
+                        value[index].name.toString(),
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      subtitle: Text(
+                        "WS_Code : ${value[index].ws_code.toString()}",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      trailing: Text(
+                        "M.R.P :-  ${value[index].ws_code.toString()}",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                    );
+                  },
+                  itemCount: value.length);
+            },
           ),
           SingleChildScrollView(
             padding: EdgeInsets.all(8),
@@ -105,31 +161,48 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                 DropdownButton(
                   padding: EdgeInsets.only(left: 70),
                   hint: Text("Status "),
-                  value: dropDownValue2,
                   items: [
                     DropdownMenuItem(
-                      value: "Accepted",
+                      value: "ACCEPTED",
                       child: Text("Accepted"),
                     ),
                     DropdownMenuItem(
-                      value: "Fulfilled",
+                      value: "FULFILLED",
                       child: Text("Fulfilled"),
                     ),
                     DropdownMenuItem(
-                      value: "Cancelled",
+                      value: "CANCELLED",
                       child: Text("Cancelled"),
                     ),
                     DropdownMenuItem(
-                      value: "Partially Fulfilled",
+                      value: "PARTIALLY_FULFILLED",
                       child: Text("Partially Fulfilled"),
                     ),
                     DropdownMenuItem(
-                      value: "UnAvailable",
+                      value: "UNAVAILABLE",
                       child: Text("UnAvailable"),
                     )
                   ],
                   onChanged: (value) {
-                    dropDownValue2 = value;
+                    if (provider.searchController.text.isNotEmpty &&
+                        dropDownValue1 == "Product") {
+                      provider.callDateStatusProductFilterApi(
+                          onSuccess: () {},
+                          onFail: () {},
+                          status: value.toString());
+                    } else if (provider.searchController.text.isNotEmpty &&
+                        dropDownValue1 == "SO Number") {
+                      provider.callDateStatusSOFilterApi(
+                          onSuccess: () {},
+                          onFail: () {},
+                          status: value.toString(),
+                          searchSO: provider.searchController.text);
+                    } else {
+                      provider.callDateAndStatusFilterApi(
+                          onSuccess: () {},
+                          onFail: () {},
+                          status: value.toString());
+                    }
                     setState(() {});
                   },
                 )
@@ -142,6 +215,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
+                    // border: TableBorder.symmetric(outside: BorderSide(), inside: BorderSide()),
                     columns: <DataColumn>[
                       DataColumn(label: Text("Product Name")),
                       DataColumn(label: Text("Store Name")),
@@ -154,16 +228,16 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                       DataColumn(label: Text("Remarks")),
                     ],
                     rows: salesOrderItemsProvider.asMap().entries.map((entry) {
-                      final index = entry.key;
+                      // final index = entry.key;
                       final result = entry.value;
                       return DataRow(cells: [
-                        DataCell(Text(result.product_name)),
-                        DataCell(Text(result.store_name)),
-                        DataCell(Text(result.so_number)),
-                        DataCell(Text(result.so_date)),
-                        DataCell(Text(result.doc_number)),
-                        DataCell(Text(result.ordered_quantity.toString())),
-                        DataCell(Text(result.fulfilled_quantity.toString())),
+                        DataCell(Text(result.productName)),
+                        DataCell(Text(result.storeName)),
+                        DataCell(Text(result.soNumber)),
+                        DataCell(Text(result.soDate)),
+                        DataCell(Text(result.docNumber.toString())),
+                        DataCell(Text(result.orderedQuantity.toString())),
+                        DataCell(Text(result.fulfilledQuantity.toString())),
                         DataCell(Text(result.status)),
                         DataCell(Text(result.remark)),
                       ]);

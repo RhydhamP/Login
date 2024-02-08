@@ -7,8 +7,37 @@ class SalesOrderRepository implements SalesOrderApi {
 
   @override
   Future dateFilterApi(Map<String, dynamic> body) {
-    // TODO: implement dateFilterApi
     return dio.get("https://opsapi-v2.mkart.dev/api/v1/orders/sales-orders",
         queryParameters: body);
   }
+
+  @override
+  Future checkAvailability(Map<String, dynamic> body) {
+    return dio.get("https://ecom.mkart.dev/api/v1/product/check-available",
+        queryParameters: body);
+  }
+
+  // @override
+  // Future dateFilterAndProductApi(Map<String, dynamic> body) {
+  //   return dio.get("https://opsapi-v2.mkart.dev/api/v1/orders/sales-orders",
+  //       queryParameters: body);
+  // }
+
+  // @override
+  // Future dateFilterAndSOApi(Map<String, dynamic> body) {
+  //   return dio.get("https://opsapi-v2.mkart.dev/api/v1/orders/sales-orders",
+  //       queryParameters: body);
+  // }
+
+  // @override
+  // Future dateAndStatusFilterApi(Map<String, dynamic> body) {
+  //   return dio.get("https://opsapi-v2.mkart.dev/api/v1/orders/sales-orders",
+  //       queryParameters: body);
+  // }
+
+  // @override
+  // Future dateAndStatusAndProductFilterApi(Map<String, dynamic> body) {
+  //   return dio.get("https://opsapi-v2.mkart.dev/api/v1/orders/sales-orders",
+  //       queryParameters: body);
+  // }
 }
