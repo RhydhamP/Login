@@ -45,14 +45,12 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                       return;
                     }
                     if (dropDownValue1 == "Product") {
-                      provider.callCheckAvailability(
+                      provider.callProductSearchApi(
                           onSuccess: () {}, onFail: () {}, query: value);
                     } else if (dropDownValue1 == "SO Number") {
                       print("SO api caled");
                       provider.callDateAndSOFilterApi(
-                          onSuccess: () {},
-                          onFail: () {},
-                          searchSO: "$value,so_number");
+                          onSuccess: () {}, onFail: () {});
                     }
                     setState(() {});
                   },
@@ -106,8 +104,14 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                         // setState(() {});
                         provider.productListProvider.value = [];
 
-                        provider.callDateAndProductFilterApi(
-                            onSuccess: () {}, onFail: () {});
+                        if (provider.isDateSelected) {
+                          provider.callProductDateFilterApi(
+                              onSuccess: () {}, onFail: () {});
+                        } else {
+                          provider.callProductFilterApi(
+                              onSuccess: () {}, onFail: () {});
+                        }
+
                         // provider.searchController.clear();
                       },
                       title: Text(
@@ -154,8 +158,26 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                       print(pickedDate?.start);
                       print(pickedDate?.end);
                       provider.dateProvider.value = pickedDate;
-                      provider.callDateFilterApi(
-                          onSuccess: () {}, onFail: () {});
+
+                      provider.isDateSelected = true;
+
+                      if (provider.searchController.text.isNotEmpty &&
+                          dropDownValue1 == "Product") {
+                        if (provider.storeSearchController.text.isNotEmpty) {
+                          provider.callProductDateStoreFilterApi(
+                              onSuccess: () {}, onFail: () {});
+                        } else {
+                          provider.callProductDateFilterApi(
+                              onSuccess: () {}, onFail: () {});
+                        }
+                      } else if (provider
+                          .storeSearchController.text.isNotEmpty) {
+                        provider.callDateStoreFilterApi(
+                            onSuccess: () {}, onFail: () {});
+                      } else {
+                        provider.callDateFilterApi(
+                            onSuccess: () {}, onFail: () {});
+                      }
                     },
                     child: Icon(Icons.date_range_outlined)),
                 DropdownButton(
@@ -186,19 +208,55 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                   onChanged: (value) {
                     if (provider.searchController.text.isNotEmpty &&
                         dropDownValue1 == "Product") {
-                      provider.callDateStatusProductFilterApi(
+                      if (provider.isDateSelected &&
+                          provider.storeSearchController.text.isNotEmpty) {
+                        provider.callProductDateStatusStoreFilterApi(
+                            onSuccess: () {},
+                            onFail: () {},
+                            status: value.toString());
+                      } else if (provider.isDateSelected) {
+                        provider.callProductDateStatusFilterApi(
+                            onSuccess: () {},
+                            onFail: () {},
+                            status: value.toString());
+                      } else if (provider
+                          .storeSearchController.text.isNotEmpty) {
+                        provider.callProductStatusStoreFilterApi(
+                            onSuccess: () {},
+                            onFail: () {},
+                            status: value.toString());
+                      } else {
+                        provider.callProductStatusFilterApi(
+                            onSuccess: () {},
+                            onFail: () {},
+                            status: value.toString());
+                      }
+                    } else if (provider.searchController.text.isNotEmpty &&
+                        dropDownValue1 == "SO Number") {
+                      if (provider.isDateSelected) {
+                        provider.callDateStatusSOFilterApi(
+                            onSuccess: () {},
+                            onFail: () {},
+                            status: value.toString());
+                      }
+                    } else if (provider.isDateSelected &&
+                        provider.storeSearchController.text.isNotEmpty) {
+                      provider.callDateStatusStoreFilterApi(
                           onSuccess: () {},
                           onFail: () {},
                           status: value.toString());
-                    } else if (provider.searchController.text.isNotEmpty &&
-                        dropDownValue1 == "SO Number") {
-                      provider.callDateStatusSOFilterApi(
+                    } else if (provider.isDateSelected) {
+                      provider.callDateStatusFilterApi(
                           onSuccess: () {},
                           onFail: () {},
-                          status: value.toString(),
-                          searchSO: provider.searchController.text);
+                          status: value.toString());
+                    } else if (provider.storeSearchController.text.isNotEmpty) {
+                      provider.callStatusStoreFilterApi(
+                          onSuccess: () {},
+                          onFail: () {},
+                          status: value.toString());
                     } else {
-                      provider.callDateAndStatusFilterApi(
+                      provider.callStatusFilterApi(
                           onSuccess: () {},
                           onFail: () {},
                           status: value.toString());
@@ -208,6 +266,63 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                 )
               ],
             ),
+          ),
+          TextFormField(
+            controller: provider.storeSearchController,
+            onChanged: (value) {
+              if (value.isEmpty) {
+                provider.storeListProvider.value = [];
+                provider.storeCode = null;
+                return;
+              }
+              provider.callStoreSearchApi(
+                  onSuccess: () {}, onFail: () {}, query: value);
+            },
+            decoration: InputDecoration(
+                hintText: "Store",
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(),
+                    borderRadius: BorderRadius.circular(40))),
+          ),
+          ValueListenableBuilder(
+            valueListenable: provider.storeListProvider,
+            builder: (context, value, child) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {
+                        // print("Pressed");
+                        provider.storeSearchController.text =
+                            value[index].name.toString();
+                        provider.storeCode = value[index].storeCode;
+                        provider.storeListProvider.value = [];
+                        if (dropDownValue1 == "Product" &&
+                            provider.searchController.text.isNotEmpty) {
+                          if (provider.isDateSelected) {
+                            provider.callProductDateStoreFilterApi(
+                                onSuccess: () {}, onFail: () {});
+                          } else {
+                            provider.callProductStoreFilterApi(
+                                onSuccess: () {}, onFail: () {});
+                          }
+                        } else if (provider.isDateSelected) {
+                          provider.callDateStoreFilterApi(
+                              onSuccess: () {}, onFail: () {});
+                        } else {
+                          provider.callStoreFilterApi(
+                              onSuccess: () {}, onFail: () {});
+                        }
+                      },
+                      title: Text(
+                        value[index].name.toString(),
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    );
+                  },
+                  itemCount: value.length);
+            },
           ),
           ValueListenableBuilder(
             valueListenable: provider.salesOrderItemsProvider,

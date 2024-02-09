@@ -12,8 +12,14 @@ class SalesOrderRepository implements SalesOrderApi {
   }
 
   @override
-  Future checkAvailability(Map<String, dynamic> body) {
+  Future productSearchApi(Map<String, dynamic> body) {
     return dio.get("https://ecom.mkart.dev/api/v1/product/check-available",
+        queryParameters: body);
+  }
+
+  @override
+  Future storeSearchApi(Map<String, dynamic> body) {
+    return dio.get("https://opsapi-v2.mkart.dev/api/v1/store/search",
         queryParameters: body);
   }
 
