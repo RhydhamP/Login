@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:login/base_view_model.dart';
+import 'package:login/models/sales/filter_searchType_model.dart';
 import 'package:login/models/sales/sales_model.dart';
 import 'package:login/models/search/product_model.dart';
 import 'package:login/models/search/search_model.dart';
 import 'package:login/models/store/store_model.dart';
 import 'package:login/repository/salesOrder_repository.dart';
 import 'package:login/utils/date_formatter.dart';
+
+import '../../enum/sale_filter_enum.dart';
+import '../../models/sales/filter_status_model.dart';
 
 class SalesOrderViewModel extends BaseViewModel {
   final SalesOrderRepository salesOrderRepository;
@@ -24,9 +28,96 @@ class SalesOrderViewModel extends BaseViewModel {
   final TextEditingController storeSearchController = TextEditingController();
   ValueNotifier<List<Store>> storeListProvider = ValueNotifier([]);
 
+  String? dropDownValue1 = "Product";
   int? productWsCode;
   String? storeCode;
   bool isDateSelected = false;
+
+  List<SearchTypeModel> searchTypeList = [
+    SearchTypeModel(
+        searchTypeEnum: SalesSearchTypeEnum.product, label: "Product"),
+    SearchTypeModel(searchTypeEnum: SalesSearchTypeEnum.so, label: "SO Number")
+  ];
+  ValueNotifier<SalesSearchTypeEnum?> selectedSearchType =
+      ValueNotifier(SalesSearchTypeEnum.product);
+
+  List<FilterStatusModel> statusFilterList = [
+    FilterStatusModel(
+        label: 'Accepted', statusEnum: SaleStatusFilterEnum.accepted),
+    FilterStatusModel(
+        label: 'Fulfilled', statusEnum: SaleStatusFilterEnum.fulfilled),
+    FilterStatusModel(
+        label: 'Cancelled', statusEnum: SaleStatusFilterEnum.cancelled),
+    FilterStatusModel(
+        label: 'Partially Fulfilled',
+        statusEnum: SaleStatusFilterEnum.partiallyFulfilled),
+    FilterStatusModel(
+        label: 'UnAvailable', statusEnum: SaleStatusFilterEnum.unAvailable),
+  ];
+  ValueNotifier<SaleStatusFilterEnum?> selectedStatus = ValueNotifier(null);
+
+  afterDateSelected() {
+    if (searchController.text.isNotEmpty && dropDownValue1 == "Product") {
+      if (storeSearchController.text.isNotEmpty) {
+        callProductDateStoreFilterApi(onSuccess: () {}, onFail: () {});
+      } else {
+        callProductDateFilterApi(onSuccess: () {}, onFail: () {});
+      }
+    } else if (searchController.text.isNotEmpty && dropDownValue1 == "SO") {
+      if (storeSearchController.text.isNotEmpty) {
+        callSODateStoreFilterApi(onSuccess: () {}, onFail: () {});
+      } else {
+        callSODateFilterApi(onSuccess: () {}, onFail: () {});
+      }
+    } else if (storeSearchController.text.isNotEmpty) {
+      callDateStoreFilterApi(onSuccess: () {}, onFail: () {});
+    } else {
+      callDateFilterApi(onSuccess: () {}, onFail: () {});
+    }
+  }
+
+  afterStatusSelected() {
+    var value = selectedStatus.value?.value ?? '';
+
+    if (searchController.text.isNotEmpty && dropDownValue1 == "Product") {
+      if (isDateSelected && storeSearchController.text.isNotEmpty) {
+        callProductDateStatusStoreFilterApi(
+            onSuccess: () {}, onFail: () {}, status: value);
+      } else if (isDateSelected) {
+        callProductDateStatusFilterApi(
+            onSuccess: () {}, onFail: () {}, status: value);
+      } else if (storeSearchController.text.isNotEmpty) {
+        callProductStatusStoreFilterApi(
+            onSuccess: () {}, onFail: () {}, status: value);
+      } else {
+        callProductStatusFilterApi(
+            onSuccess: () {}, onFail: () {}, status: value);
+      }
+    } else if (searchController.text.isNotEmpty &&
+        dropDownValue1 == "SO Number") {
+      if (isDateSelected && storeSearchController.text.isNotEmpty) {
+        callSODateStatusStoreFilterApi(
+            onSuccess: () {}, onFail: () {}, status: value);
+      } else if (isDateSelected) {
+        callSODateStatusFilterApi(
+            onSuccess: () {}, onFail: () {}, status: value);
+      } else if (storeSearchController.text.isNotEmpty) {
+        callSOStatusStoreFilterApi(
+            onSuccess: () {}, onFail: () {}, status: value);
+      } else {
+        callSOStatusFilterApi(onSuccess: () {}, onFail: () {}, status: value);
+      }
+    } else if (isDateSelected && storeSearchController.text.isNotEmpty) {
+      callDateStatusStoreFilterApi(
+          onSuccess: () {}, onFail: () {}, status: value);
+    } else if (isDateSelected) {
+      callDateStatusFilterApi(onSuccess: () {}, onFail: () {}, status: value);
+    } else if (storeSearchController.text.isNotEmpty) {
+      callStatusStoreFilterApi(onSuccess: () {}, onFail: () {}, status: value);
+    } else {
+      callStatusFilterApi(onSuccess: () {}, onFail: () {}, status: value);
+    }
+  }
 
   callProductSearchApi(
       {required Function onSuccess,
@@ -303,7 +394,21 @@ class SalesOrderViewModel extends BaseViewModel {
     }
   }
 
-  callDateAndSOFilterApi(
+  callSOFilterApi(
+      {required Function onSuccess, required Function onFail}) async {
+    try {
+      await salesOrderRepository
+          .dateFilterApi({'search': "${searchController.text},so_number"}).then(
+              (response) async {
+        final res = SalesOrderResponse.fromJson(response.data);
+        salesOrderItemsProvider.value = res.salesOrderItem;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  callSODateFilterApi(
       {required Function onSuccess, required Function onFail}) async {
     try {
       await salesOrderRepository.dateFilterApi({
@@ -319,7 +424,39 @@ class SalesOrderViewModel extends BaseViewModel {
     }
   }
 
-  callDateStatusSOFilterApi(
+  callSOStatusFilterApi(
+      {required Function onSuccess,
+      required Function onFail,
+      required String status}) async {
+    try {
+      await salesOrderRepository.dateFilterApi({
+        'status': status,
+        'search': "${searchController.text},so_number"
+      }).then((response) async {
+        final res = SalesOrderResponse.fromJson(response.data);
+        salesOrderItemsProvider.value = res.salesOrderItem;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  callSOStoreFilterApi(
+      {required Function onSuccess, required Function onFail}) async {
+    try {
+      await salesOrderRepository.dateFilterApi({
+        'search': "${searchController.text},so_number",
+        'store_code': storeCode
+      }).then((response) async {
+        final res = SalesOrderResponse.fromJson(response.data);
+        salesOrderItemsProvider.value = res.salesOrderItem;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  callSODateStatusFilterApi(
       {required Function onSuccess,
       required Function onFail,
       required String status}) async {
@@ -327,6 +464,61 @@ class SalesOrderViewModel extends BaseViewModel {
       await salesOrderRepository.dateFilterApi({
         'status': status,
         'search': "${searchController.text},so_number",
+        'from_date': dateProvider.value?.start.toFormate(),
+        'to_date': dateProvider.value?.end.toFormate(),
+      }).then((response) async {
+        final res = SalesOrderResponse.fromJson(response.data);
+        salesOrderItemsProvider.value = res.salesOrderItem;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  callSODateStoreFilterApi(
+      {required Function onSuccess, required Function onFail}) async {
+    try {
+      await salesOrderRepository.dateFilterApi({
+        'search': "${searchController.text},so_number",
+        'store_code': storeCode,
+        'from_date': dateProvider.value?.start.toFormate(),
+        'to_date': dateProvider.value?.end.toFormate(),
+      }).then((response) async {
+        final res = SalesOrderResponse.fromJson(response.data);
+        salesOrderItemsProvider.value = res.salesOrderItem;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  callSOStatusStoreFilterApi(
+      {required Function onSuccess,
+      required Function onFail,
+      required String status}) async {
+    try {
+      await salesOrderRepository.dateFilterApi({
+        'status': status,
+        'search': "${searchController.text},so_number",
+        'store_code': storeCode
+      }).then((response) async {
+        final res = SalesOrderResponse.fromJson(response.data);
+        salesOrderItemsProvider.value = res.salesOrderItem;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  callSODateStatusStoreFilterApi(
+      {required Function onSuccess,
+      required Function onFail,
+      required String status}) async {
+    try {
+      await salesOrderRepository.dateFilterApi({
+        'status': status,
+        'search': "${searchController.text},so_number",
+        'store_code': storeCode,
         'from_date': dateProvider.value?.start.toFormate(),
         'to_date': dateProvider.value?.end.toFormate(),
       }).then((response) async {

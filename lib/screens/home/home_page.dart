@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:login/models/add/add_model4.dart';
 import 'package:login/provider/vm_provider.dart';
+import 'package:login/screens/home/home_delegate.dart';
 import 'package:login/screens/home/home_page_drawer.dart';
 
 // class HomePage extends StatefulWidget {
@@ -16,18 +15,18 @@ import 'package:login/screens/home/home_page_drawer.dart';
 
 // final productListProvider = StateProvider<List<ProductModel>>((ref) => []);
 
-final addProductProvider = StateProvider<List<AddModel4>>((ref) => []);
+// final addProductProvider = StateProvider<List<AddModel4>>((ref) => []);
 
 // ignore: must_be_immutable
 class HomePage extends ConsumerWidget {
-  final dio = Dio();
+  // final dio = Dio();
 
   // List<ProductModel> productList = [];
 
   // List<AddModel4> addProduct = [];
 
-  bool isFillSearch = false;
-  int? fillSearchWSCode;
+  // bool isFillSearch = false;
+  // int? fillSearchWSCode;
 
   // addToList(var value, WidgetRef ref) async {
   //   // print("Added to Search");
@@ -106,7 +105,7 @@ class HomePage extends ConsumerWidget {
   // TextEditingController searchController = TextEditingController();
   // TextEditingController quantityController = TextEditingController();
 
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -148,57 +147,52 @@ class HomePage extends ConsumerWidget {
                     borderSide: BorderSide(),
                     borderRadius: BorderRadius.circular(35)),
                 hintText: "Search",
-                /* suffix: IconButton(
-                      onPressed: () {
-                        fillSearch = " ";
-                        setState(() {});
-                      },
-                      icon: Icon(Icons.clear)) */
               ),
-              onChanged: (value) {
-                if (value.isEmpty) {
-                  provider.productListProvider.value = [];
-                  return;
-                }
-                provider.callCheckAvailability(
-                    onSuccess: () {}, onFail: () {}, keyWord: value);
+              onTap: () async {
+                await showSearch(
+                    context: context,
+                    delegate:
+                        ProductSearchDelegate(provider: provider, ref: ref));
               },
+              // onChanged: (value) {
+              //   if (value.isEmpty) {
+              //     provider.productListProvider.value = [];
+              //     return;
+              //   }
+              //   provider.callCheckAvailability(
+              //       onSuccess: () {}, onFail: () {}, keyWord: value);
+              // },
             ),
-            ValueListenableBuilder(
-              valueListenable: provider.productListProvider,
-              builder: (context, value, child) {
-                return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          // print("Pressed");
-                          provider.searchController.text = value[index].name;
-                          // searchController.clear();
-                          fillSearchWSCode = value[index].ws_code;
-                          // Quantity = productList[index].
-                          // ref.read(productListProvider.notifier).state = [];
-                          // setState(() {});
-                          provider.productListProvider.value = [];
-                        },
-                        title: Text(
-                          value[index].name.toString(),
-                          style: TextStyle(fontSize: 17),
-                        ),
-                        subtitle: Text(
-                          "WS_Code : ${value[index].ws_code.toString()}",
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        trailing: Text(
-                          "M.R.P :-  ${value[index].ws_code.toString()}",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      );
-                    },
-                    itemCount: value.length);
-              },
-            ),
+            // ValueListenableBuilder(
+            //   valueListenable: provider.productListProvider,
+            //   builder: (context, value, child) {
+            //     return ListView.builder(
+            //         shrinkWrap: true,
+            //         physics: const NeverScrollableScrollPhysics(),
+            //         itemBuilder: (context, index) {
+            //           return ListTile(
+            //             onTap: () {
+            //               provider.searchController.text = value[index].name;
+            //               provider.fillSearchWSCode = value[index].ws_code;
+            //               provider.productListProvider.value = [];
+            //             },
+            //             title: Text(
+            //               value[index].name.toString(),
+            //               style: TextStyle(fontSize: 17),
+            //             ),
+            //             subtitle: Text(
+            //               "WS_Code : ${value[index].ws_code.toString()}",
+            //               style: TextStyle(fontSize: 14),
+            //             ),
+            //             trailing: Text(
+            //               "M.R.P :-  ${value[index].ws_code.toString()}",
+            //               style: TextStyle(fontSize: 13),
+            //             ),
+            //           );
+            //         },
+            //         itemCount: value.length);
+            //   },
+            // ),
             const SizedBox(
               height: 25,
             ),
@@ -223,7 +217,7 @@ class HomePage extends ConsumerWidget {
                   provider.callAddToList(
                       onSuccess: () {},
                       onFail: () {},
-                      ws_code: fillSearchWSCode.toString(),
+                      ws_code: provider.fillSearchWSCode.toString(),
                       quantity: provider.quantityController.text,
                       search_keyword: provider.searchController.text);
 

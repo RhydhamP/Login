@@ -18,6 +18,8 @@ class HomeViewModel extends BaseViewModel {
 
   ValueNotifier<List<AddModel4>> addToListProvider = ValueNotifier([]);
 
+  int? fillSearchWSCode;
+
   callCheckAvailability(
       {required Function onSuccess,
       required Function onFail,
