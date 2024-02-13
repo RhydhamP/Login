@@ -211,6 +211,7 @@ class HomePage extends ConsumerWidget {
             ),
             Material(
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(side: BorderSide()),
                 onPressed: () {
                   // print("Rhydham");
                   // addToList(ref, fillSearchWSCode, quantity, searchController);
@@ -306,31 +307,33 @@ class HomePage extends ConsumerWidget {
                                 final result = entry.value;
                                 return DataRow(cells: [
                                   DataCell(Text(
-                                    result.Product.name,
+                                    result.product.name,
                                     style: TextStyle(fontSize: 15),
                                   )),
                                   DataCell(Text(
-                                    result.Product.mrp.toString(),
+                                    result.product.mrp.toString(),
                                     style: TextStyle(fontSize: 15),
                                   )),
                                   DataCell(Text(
-                                    result.Availability.wsQuantity.toString(),
+                                    result.availability.wsQuantity.toString(),
                                     style: TextStyle(fontSize: 15),
                                   )),
                                   DataCell(Text(
-                                    result.Availability.wsRes == true
+                                    result.availability.wsRes == true
                                         ? "Available"
                                         : "Not Available",
                                     style: TextStyle(fontSize: 15),
                                   )),
                                   DataCell(Text(
-                                    result.Availability.wsRes == false
+                                    result.availability.wsRes == false
                                         ? "Contact 9999999999"
                                         : "Available at Warehouse",
                                     style: TextStyle(fontSize: 15),
                                   )),
                                   DataCell(ElevatedButton(
-                                    child: const Icon(Icons.delete_outline),
+                                    child: const Icon(
+                                      Icons.delete_outline,
+                                    ),
                                     onPressed: () {
                                       provider.addToListProvider.value = [
                                         ...addToListProvider
@@ -358,6 +361,7 @@ class HomePage extends ConsumerWidget {
               builder: (context, addToListProvider, child) {
                 return addToListProvider.isNotEmpty
                     ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(side: BorderSide()),
                         onPressed: () {
                           provider.addToListProvider.value = [];
                           // ref.read(addProductProvider.notifier).state = [];

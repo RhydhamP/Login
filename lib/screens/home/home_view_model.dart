@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:login/base_view_model.dart';
-import 'package:login/models/add/add_model.dart';
 import 'package:login/models/add/add_model4.dart';
-import 'package:login/models/search/product_model.dart';
-import 'package:login/models/search/search_model.dart';
+import 'package:login/models/add/add_product_model.dart';
+import 'package:login/models/search/product_search_model.dart';
 import 'package:login/repository/home_repository.dart';
 
 class HomeViewModel extends BaseViewModel {
@@ -14,7 +13,7 @@ class HomeViewModel extends BaseViewModel {
   final TextEditingController searchController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
 
-  ValueNotifier<List<ProductModel>> productListProvider = ValueNotifier([]);
+  ValueNotifier<List<Product>> productListProvider = ValueNotifier([]);
 
   ValueNotifier<List<AddModel4>> addToListProvider = ValueNotifier([]);
 
@@ -28,7 +27,7 @@ class HomeViewModel extends BaseViewModel {
       await homeRepository
           .checkAvailability({'q': keyWord}).then((response) async {
         // print(response.data);
-        final res = SearchModel.fromJson(response.data);
+        final res = Search.fromJson(response.data);
         productListProvider.value = res.products;
         // print("Succu $productListProvider");
 
@@ -54,9 +53,9 @@ class HomeViewModel extends BaseViewModel {
         'search_keyword': search_keyword
       }).then((reponse) async {
         print(reponse.data);
-        final res = AddModel.fromJson(reponse.data);
+        final res = Add.fromJson(reponse.data);
         final searchResult =
-            AddModel4(Product: res.Product, Availability: res.Availability);
+            AddModel4(product: res.product, availability: res.availability);
         addToListProvider.value = [...addToListProvider.value, searchResult];
       });
     } catch (e) {

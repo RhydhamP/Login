@@ -43,7 +43,7 @@ class ProductSearchDelegate extends SearchDelegate {
               return ListTile(
                 onTap: () {
                   provider.searchController.text = value[index].name;
-                  provider.fillSearchWSCode = value[index].ws_code;
+                  provider.fillSearchWSCode = value[index].wsCode;
                   provider.productListProvider.value = [];
                   Navigator.pushNamedAndRemoveUntil(
                       context, MyRoutes.homeRoute, (route) => false);
@@ -53,11 +53,11 @@ class ProductSearchDelegate extends SearchDelegate {
                   style: TextStyle(fontSize: 17),
                 ),
                 subtitle: Text(
-                  "WS_Code : ${value[index].ws_code.toString()}",
+                  "WS_Code : ${value[index].wsCode.toString()}",
                   style: TextStyle(fontSize: 14),
                 ),
                 trailing: Text(
-                  "M.R.P :-  ${value[index].ws_code.toString()}",
+                  "M.R.P :-  ${value[index].wsCode.toString()}",
                   style: TextStyle(fontSize: 13),
                 ),
               );

@@ -8,11 +8,3 @@ enum SaleStatusFilterEnum {
   final String value;
   const SaleStatusFilterEnum(this.value);
 }
-
-enum SalesSearchTypeEnum {
-  product("Product"),
-  so("SO");
-
-  final String value;
-  const SalesSearchTypeEnum(this.value);
-}

@@ -6,6 +6,7 @@ import 'package:login/provider/vm_provider.dart';
 import 'package:login/screens/home/home_page_drawer.dart';
 import 'package:login/screens/sales/sales_delegate.dart';
 import '../../enum/sale_filter_enum.dart';
+import '../../enum/sales_search_type_enum.dart';
 
 class SalesOrderPage extends ConsumerStatefulWidget {
   const SalesOrderPage({super.key});
@@ -39,54 +40,63 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
             padding: const EdgeInsets.all(4.0),
             child: Row(
               children: [
-                Expanded(
-                  child: TextFormField(
-                    onTap: () async {
-                      if (provider.dropDownValue1 == "Product") {
-                        await showSearch(
-                            context: context,
-                            delegate: SalesProductSearchDelegate(
-                                provider: provider, ref: ref));
-                      }
-                    },
-                    onChanged: (value) {
-                      // if (value.isEmpty) {
-                      //   provider.productListProvider.value = [];
-                      //   return;
-                      // }
-                      // if (provider.dropDownValue1 == "Product") {
-                      //   provider.callProductSearchApi(
-                      //       onSuccess: () {}, onFail: () {}, query: value);
-                      // } else
-                      if (provider.dropDownValue1 == "SO Number") {
-                        if (provider.isDateSelected &&
-                            provider.storeSearchController.text.isNotEmpty) {
-                          provider.callSODateStoreFilterApi(
-                              onSuccess: () {}, onFail: () {});
-                        } else if (provider.isDateSelected) {
-                          provider.callSODateFilterApi(
-                              onSuccess: () {}, onFail: () {});
-                        } else if (provider
-                            .storeSearchController.text.isNotEmpty) {
-                          provider.callSOStoreFilterApi(
-                              onSuccess: () {}, onFail: () {});
-                        } else {
-                          provider.callSOFilterApi(
-                              onSuccess: () {}, onFail: () {});
-                        }
-                      }
-                      setState(() {});
-                    },
-                    controller: provider.searchController,
-                    decoration: InputDecoration(
-                        hintText: provider.dropDownValue1 == "Product"
-                            ? "Search By Product Name"
-                            : "Search By SO Number",
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(),
-                            borderRadius: BorderRadius.circular(40))),
-                  ),
+                SizedBox(
+                  width: 4,
                 ),
+                Expanded(
+                    child: ValueListenableBuilder(
+                  valueListenable: provider.selectedSearchType,
+                  builder: (context, searchType, child) {
+                    return TextFormField(
+                      onTap: () async {
+                        if (searchType == SalesSearchTypeEnum.product) {
+                          await showSearch(
+                              context: context,
+                              delegate: SalesProductSearchDelegate(
+                                  provider: provider, ref: ref));
+                        }
+                      },
+                      onChanged: (value) {
+                        provider.callFilterApi();
+
+                        // if (value.isEmpty) {
+                        //   provider.productListProvider.value = [];
+                        //   return;
+                        // }
+                        // if (provider.dropDownValue1 == "Product") {
+                        //   provider.callProductSearchApi(
+                        //       onSuccess: () {}, onFail: () {}, query: value);
+                        // } else
+
+                        // if (provider.selectedSearchType.value ==
+                        //     SalesSearchTypeEnum.so) {
+                        //   if (provider.isDateSelected &&
+                        //       provider.storeSearchController.text.isNotEmpty) {
+                        //     provider.callSODateStoreFilterApi(
+                        //         onSuccess: () {}, onFail: () {});
+                        //   } else if (provider.isDateSelected) {
+                        //     provider.callSODateFilterApi(
+                        //         onSuccess: () {}, onFail: () {});
+                        //   } else if (provider
+                        //       .storeSearchController.text.isNotEmpty) {
+                        //     provider.callSOStoreFilterApi(
+                        //         onSuccess: () {}, onFail: () {});
+                        //   } else {
+                        //     provider.callSOFilterApi(value);
+                        //   }
+                        // }
+                      },
+                      controller: provider.searchController,
+                      decoration: InputDecoration(
+                          hintText: searchType == SalesSearchTypeEnum.product
+                              ? "Search By Product Name"
+                              : "Search By SO Number",
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(),
+                              borderRadius: BorderRadius.circular(40))),
+                    );
+                  },
+                )),
                 SizedBox(
                   width: 20,
                 ),
@@ -94,6 +104,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                   valueListenable: provider.selectedSearchType,
                   builder: (context, value, child) {
                     return DropdownButton<SalesSearchTypeEnum>(
+                      borderRadius: BorderRadius.circular(15),
                       value: value,
                       items: provider.searchTypeList
                           .map(
@@ -105,6 +116,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                           .toList(),
                       onChanged: (value) {
                         provider.selectedSearchType.value = value;
+                        provider.searchController.clear();
                       },
                     );
                   },
@@ -163,7 +175,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
             child: Row(
               children: [
                 SizedBox(
-                  width: 20,
+                  width: 10,
                 ),
                 // SfDateRangePicker(
                 //   view: DateRangePickerView.month,
@@ -175,83 +187,133 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                 //     // print("Date Changed");
                 //   },
                 // ),
-                ElevatedButton(
-                    onPressed: () async {
-                      final pickedDate = await showDateRangePicker(
-                          context: context,
-                          initialDateRange: DateTimeRange(
-                              start: DateTime.now().subtract(Duration(days: 1)),
-                              end: DateTime.now()),
-                          firstDate: DateTime(2022),
-                          lastDate: DateTime.now());
-                      // print(pickedDate?.start);
-                      // print(pickedDate?.end);
-                      provider.dateProvider.value = pickedDate;
+                ValueListenableBuilder(
+                  valueListenable: provider.dateProvider,
+                  builder: (context, value, child) {
+                    return Row(
+                      children: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                side: BorderSide(style: BorderStyle.solid)),
+                            onPressed: () async {
+                              final pickedDate = await showDateRangePicker(
+                                  context: context,
+                                  initialDateRange: DateTimeRange(
+                                      start: DateTime.now()
+                                          .subtract(Duration(days: 1)),
+                                      end: DateTime.now()),
+                                  firstDate: DateTime(2022),
+                                  lastDate: DateTime.now());
+                              // print(pickedDate?.start);
+                              // print(pickedDate?.end);
+                              provider.dateProvider.value = pickedDate;
 
-                      provider.isDateSelected = true;
-                      provider.afterDateSelected();
-                    },
-                    child: Icon(
-                      Icons.date_range_outlined,
-                      size: 32,
-                    )),
-                SizedBox(
-                  width: 60,
-                ),
-                Expanded(
-                    child: ValueListenableBuilder(
-                  valueListenable: provider.selectedStatus,
-                  builder: (context, status, child) {
-                    return DropdownButton<SaleStatusFilterEnum>(
-                      iconSize: 25,
-                      borderRadius: BorderRadius.circular(15),
-                      // padding: EdgeInsets.only(left: 16),
-                      elevation: 1,
-                      value: status,
-                      isExpanded: true,
-                      hint: Text("Status "),
-                      items: provider.statusFilterList
-                          .map(
-                            (status) => DropdownMenuItem(
-                              value: status.statusEnum,
-                              child: Text(status.label),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (status) {
-                        provider.afterStatusSelected();
-                      },
+                              // provider.isDateSelected = true;
+                              provider.callFilterApi();
+                            },
+                            child: Icon(
+                              Icons.date_range_outlined,
+                              size: 32,
+                            )),
+                        provider.dateProvider.value != null
+                            ? InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () {
+                                  provider.clearDateFilter();
+                                },
+                                child: Icon(
+                                  Icons.clear,
+                                ))
+                            : Container(),
+                      ],
                     );
                   },
-                )),
+                ),
+                SizedBox(
+                  width: 30,
+                ),
+                Expanded(
+                  child: ValueListenableBuilder(
+                    valueListenable: provider.selectedStatus,
+                    builder: (context, status, child) {
+                      return DropdownButton<SaleStatusFilterEnum>(
+                        iconSize: 25,
+                        borderRadius: BorderRadius.circular(15),
+                        // padding: EdgeInsets.only(left: 16),
+                        elevation: 1,
+                        value: status,
+                        isExpanded: true,
+                        hint: Text("Status ",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        items: provider.statusFilterList
+                            .map(
+                              (status) => DropdownMenuItem(
+                                value: status.statusEnum,
+                                child: Text(status.label),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (status) {
+                          provider.selectedStatus.value = status;
+                          provider.callFilterApi();
+                        },
+                      );
+                    },
+                  ),
+                ),
+                provider.selectedStatus.value != null
+                    ? InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () {
+                          provider.clearStatusFilter();
+                        },
+                        child: Icon(Icons.clear))
+                    : Container()
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(4.0),
-            child: TextFormField(
-              controller: provider.storeSearchController,
-              onTap: () async {
-                await showSearch(
-                    context: context,
-                    delegate:
-                        SalesStoreSearchDelegate(provider: provider, ref: ref));
-              },
-              // onChanged: (value) {
-              //   if (value.isEmpty) {
-              //     provider.storeListProvider.value = [];
-              //     provider.storeCode = null;
-              //     return;
-              //   }
-              //   provider.callStoreSearchApi(
-              //       onSuccess: () {}, onFail: () {}, query: value);
-              // },
-              decoration: InputDecoration(
-                  hintText: "Store",
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(),
-                      borderRadius: BorderRadius.circular(40))),
-            ),
+            child: Row(children: [
+              SizedBox(
+                width: 4,
+              ),
+              Expanded(
+                child: TextFormField(
+                  controller: provider.storeSearchController,
+                  onTap: () async {
+                    await showSearch(
+                        context: context,
+                        delegate: SalesStoreSearchDelegate(
+                            provider: provider, ref: ref));
+                  },
+                  // onChanged: (value) {
+                  //   if (value.isEmpty) {
+                  //     provider.storeListProvider.value = [];
+                  //     provider.storeCode = null;
+                  //     return;
+                  //   }
+                  //   provider.callStoreSearchApi(
+                  //       onSuccess: () {}, onFail: () {}, query: value);
+                  // },
+                  decoration: InputDecoration(
+                      hintText: "Store",
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                          borderRadius: BorderRadius.circular(40))),
+                ),
+              ),
+              InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {
+                    provider.clearStoreFilter();
+                  },
+                  child: Icon(Icons.clear)),
+              SizedBox(
+                width: 15,
+              ),
+            ]),
           ),
           // ValueListenableBuilder(
           //   valueListenable: provider.storeListProvider,
@@ -302,6 +364,15 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
           //         itemCount: value.length);
           //   },
           // ),
+
+          OutlinedButton(
+              onPressed: () {
+                provider.clearAllFilter();
+              },
+              child: Text(
+                "Clear Filter",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              )),
           ValueListenableBuilder(
             valueListenable: provider.salesOrderItemsProvider,
             builder: (context, salesOrderItemsProvider, child) {

@@ -43,23 +43,25 @@ class SalesProductSearchDelegate extends SearchDelegate {
               return ListTile(
                 onTap: () {
                   provider.searchController.text = value[index].name;
-                  provider.productWsCode = value[index].ws_code;
+                  provider.productWsCode = value[index].wsCode;
                   provider.productListProvider.value = [];
 
-                  if (provider.isDateSelected &&
-                      provider.storeSearchController.text.isNotEmpty) {
-                    provider.callProductDateStoreFilterApi(
-                        onSuccess: () {}, onFail: () {});
-                  } else if (provider.isDateSelected) {
-                    provider.callProductDateFilterApi(
-                        onSuccess: () {}, onFail: () {});
-                  } else if (provider.storeSearchController.text.isNotEmpty) {
-                    provider.callProductStoreFilterApi(
-                        onSuccess: () {}, onFail: () {});
-                  } else {
-                    provider.callProductFilterApi(
-                        onSuccess: () {}, onFail: () {});
-                  }
+                  provider.callFilterApi();
+
+                  // if (provider.isDateSelected &&
+                  //     provider.storeSearchController.text.isNotEmpty) {
+                  //   provider.callProductDateStoreFilterApi(
+                  //       onSuccess: () {}, onFail: () {});
+                  // } else if (provider.isDateSelected) {
+                  //   provider.callProductDateFilterApi(
+                  //       onSuccess: () {}, onFail: () {});
+                  // } else if (provider.storeSearchController.text.isNotEmpty) {
+                  //   provider.callProductStoreFilterApi(
+                  //       onSuccess: () {}, onFail: () {});
+                  // } else {
+                  //   provider.callProductFilterApi(
+                  //       onSuccess: () {}, onFail: () {});
+                  // }
 
                   Navigator.pushNamedAndRemoveUntil(
                       context, MyRoutes.salesOrderRoute, (route) => false);
@@ -69,11 +71,11 @@ class SalesProductSearchDelegate extends SearchDelegate {
                   style: TextStyle(fontSize: 17),
                 ),
                 subtitle: Text(
-                  "WS_Code : ${value[index].ws_code.toString()}",
+                  "WS_Code : ${value[index].wsCode.toString()}",
                   style: TextStyle(fontSize: 14),
                 ),
                 trailing: Text(
-                  "M.R.P :-  ${value[index].ws_code.toString()}",
+                  "M.R.P :-  ${value[index].wsCode.toString()}",
                   style: TextStyle(fontSize: 13),
                 ),
               );
@@ -135,33 +137,37 @@ class SalesStoreSearchDelegate extends SearchDelegate {
                   // print("Pressed");
                   provider.storeSearchController.text =
                       value[index].name.toString();
+
                   provider.storeCode = value[index].storeCode;
+
                   provider.storeListProvider.value = [];
-                  if (provider.dropDownValue1 == "Product" &&
-                      provider.searchController.text.isNotEmpty) {
-                    if (provider.isDateSelected) {
-                      provider.callProductDateStoreFilterApi(
-                          onSuccess: () {}, onFail: () {});
-                    } else {
-                      provider.callProductStoreFilterApi(
-                          onSuccess: () {}, onFail: () {});
-                    }
-                  } else if (provider.dropDownValue1 == "SO" &&
-                      provider.searchController.text.isNotEmpty) {
-                    if (provider.isDateSelected) {
-                      provider.callSODateStoreFilterApi(
-                          onSuccess: () {}, onFail: () {});
-                    } else {
-                      provider.callSOStoreFilterApi(
-                          onSuccess: () {}, onFail: () {});
-                    }
-                  } else if (provider.isDateSelected) {
-                    provider.callDateStoreFilterApi(
-                        onSuccess: () {}, onFail: () {});
-                  } else {
-                    provider.callStoreFilterApi(
-                        onSuccess: () {}, onFail: () {});
-                  }
+
+                  provider.callFilterApi();
+                  // if (provider.selectedSearchType.value == SalesSearchTypeEnum.product &&
+                  //     provider.searchController.text.isNotEmpty) {
+                  //   if (provider.isDateSelected) {
+                  //     provider.callProductDateStoreFilterApi(
+                  //         onSuccess: () {}, onFail: () {});
+                  //   } else {
+                  //     provider.callProductStoreFilterApi(
+                  //         onSuccess: () {}, onFail: () {});
+                  //   }
+                  // } else if (provider.selectedSearchType.value == SalesSearchTypeEnum.so &&
+                  //     provider.searchController.text.isNotEmpty) {
+                  //   if (provider.isDateSelected) {
+                  //     provider.callSODateStoreFilterApi(
+                  //         onSuccess: () {}, onFail: () {});
+                  //   } else {
+                  //     provider.callSOStoreFilterApi(
+                  //         onSuccess: () {}, onFail: () {});
+                  //   }
+                  // } else if (provider.isDateSelected) {
+                  //   provider.callDateStoreFilterApi(
+                  //       onSuccess: () {}, onFail: () {});
+                  // } else {
+                  //   provider.callStoreFilterApi(
+                  //       onSuccess: () {}, onFail: () {});
+                  // }
                   Navigator.pushNamedAndRemoveUntil(
                       context, MyRoutes.salesOrderRoute, (route) => false);
                 },

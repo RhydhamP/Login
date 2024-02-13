@@ -8,9 +8,11 @@ class LoginViewModel extends BaseViewModel {
   final LoginRepository loginRepository;
   LoginViewModel(this.loginRepository);
   final TextEditingController email =
-      TextEditingController(text: "admin@medcheck.com");
+      TextEditingController(text: "rhydham.p@medkart.in");
   final TextEditingController password =
       TextEditingController(text: "12345678");
+
+  ValueNotifier<bool> changeButton = ValueNotifier(false);
 
 // Call login api
   callLoginApi({required Function onSuccess, required Function onFail}) async {

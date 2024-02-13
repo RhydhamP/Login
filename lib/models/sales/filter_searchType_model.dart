@@ -1,4 +1,4 @@
-import 'package:login/enum/sale_filter_enum.dart';
+import '../../enum/sales_search_type_enum.dart';
 
 class SearchTypeModel {
   final SalesSearchTypeEnum searchTypeEnum;

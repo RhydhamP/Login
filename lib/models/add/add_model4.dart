@@ -1,12 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:login/models/add/add_model3.dart';
-
-import 'add_model1.dart';
+import 'package:login/models/add/add_product_model.dart';
 
 class AddModel4 {
-  final AddModel1 Product;
-  final AddModel3 Availability;
+  final AddProduct product;
+  final Availability availability;
 
-  AddModel4({required this.Product, required this.Availability});
+  AddModel4({required this.product, required this.availability});
 }

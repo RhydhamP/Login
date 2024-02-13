@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/vm_provider.dart';
 import '../../utils/routes.dart';
@@ -15,9 +14,9 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final dio = Dio();
+  // final dio = Dio();
 
-  bool changeButton = false;
+  // bool changeButton = false;
   // String email = "";
   // String password = "";
 
@@ -135,17 +134,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                     Material(
                       color: Colors.deepPurple,
-                      borderRadius:
-                          BorderRadius.circular(changeButton ? 20 : 8),
+                      borderRadius: BorderRadius.circular(
+                          provider.changeButton.value ? 20 : 8),
                       child: InkWell(
-                        onTap: () => moveToHome(
-                            context, formKey, changeButton, provider),
+                        onTap: () => moveToHome(context, formKey, provider),
                         child: AnimatedContainer(
                           duration: const Duration(seconds: 1),
-                          width: changeButton ? 50 : 120,
+                          width: provider.changeButton.value ? 50 : 120,
                           height: 40,
                           alignment: Alignment.center,
-                          child: changeButton
+                          child: provider.changeButton.value
                               ? const Icon(
                                   Icons.done,
                                   color: Colors.white,
@@ -168,9 +166,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   moveToHome(BuildContext context, GlobalKey<FormState> formKey,
-      bool changeButton, LoginViewModel provider) async {
+      LoginViewModel provider) async {
     if (formKey.currentState!.validate()) {
-      changeButton = true;
+      provider.changeButton.value = true;
       provider.callLoginApi(
           onFail: () {},
           onSuccess: () {
@@ -181,7 +179,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             );
           });
 
-      changeButton = false;
+      provider.changeButton.value = false;
     }
   }
 }
