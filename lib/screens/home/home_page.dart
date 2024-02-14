@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/provider/vm_provider.dart';
 import 'package:login/screens/home/home_delegate.dart';
-import 'package:login/screens/home/home_page_drawer.dart';
+import 'package:login/utils/drawer_page.dart';
 
 // class HomePage extends StatefulWidget {
 //   const HomePage({super.key});
@@ -118,8 +118,10 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: const Text(
           "Welcome",
+          textScaler: TextScaler.linear(1.15),
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,

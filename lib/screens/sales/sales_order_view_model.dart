@@ -29,8 +29,10 @@ class SalesOrderViewModel extends BaseViewModel {
 
   // String? dropDownValue1 = "Product";
   int? productWsCode;
-  String? storeCode;
+  // String? storeCode;
   // bool isDateSelected = false;
+
+  ValueNotifier<String?> storeCode = ValueNotifier(null);
 
   List<SearchTypeModel> searchTypeList = [
     SearchTypeModel(
@@ -61,7 +63,7 @@ class SalesOrderViewModel extends BaseViewModel {
       'from_date': dateProvider.value?.start.toFormate() ?? '',
       'to_date': dateProvider.value?.end.toFormate() ?? '',
       'status': selectedStatus.value?.value ?? '',
-      'store_code': storeCode ?? '',
+      'store_code': storeCode.value ?? '',
       'ws_code': (productWsCode ?? '').toString(),
       'search': selectedSearchType.value == SalesSearchTypeEnum.so
           ? '${searchController.text},${SalesSearchTypeEnum.so.value}'
@@ -127,7 +129,7 @@ class SalesOrderViewModel extends BaseViewModel {
   }
 
   clearStoreFilter() {
-    storeCode = null;
+    storeCode.value = null;
     storeSearchController.clear();
     callFilterApi();
     return;
@@ -136,7 +138,7 @@ class SalesOrderViewModel extends BaseViewModel {
   clearAllFilter() {
     dateProvider.value = null;
     selectedStatus.value = null;
-    storeCode = null;
+    storeCode.value = null;
     storeSearchController.clear();
     callFilterApi();
     return;

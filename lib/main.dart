@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/screens/home/home_page.dart';
 import 'package:login/screens/login/login_page.dart';
 import 'package:login/screens/sales/sales_order_view.dart';
+import 'package:login/screens/search_history/search_history_view.dart';
 import 'package:login/screens/splash.dart';
 import 'package:login/utils/routes.dart';
 
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         "/": (context) => const Splash(),
         MyRoutes.loginRoute: (context) => LoginPage(),
         MyRoutes.homeRoute: (context) => HomePage(),
-        MyRoutes.salesOrderRoute: (context) => SalesOrderPage()
+        MyRoutes.salesOrderRoute: (context) => SalesOrderPage(),
+        MyRoutes.searchHistoryRoute: (context) => SearchHistoryPage()
       },
     );
   }

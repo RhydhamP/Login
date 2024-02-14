@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/provider/vm_provider.dart';
-import 'package:login/screens/home/home_page_drawer.dart';
+import 'package:login/utils/drawer_page.dart';
 import 'package:login/screens/sales/sales_delegate.dart';
 import '../../enum/sale_filter_enum.dart';
 import '../../enum/sales_search_type_enum.dart';
@@ -22,9 +22,10 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           "Sales Order",
-          textScaleFactor: 1.15,
+          textScaler: TextScaler.linear(1.15),
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.deepPurple,
@@ -98,26 +99,33 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                   },
                 )),
                 SizedBox(
-                  width: 20,
+                  width: 15,
                 ),
                 ValueListenableBuilder(
                   valueListenable: provider.selectedSearchType,
                   builder: (context, value, child) {
-                    return DropdownButton<SalesSearchTypeEnum>(
-                      borderRadius: BorderRadius.circular(15),
-                      value: value,
-                      items: provider.searchTypeList
-                          .map(
-                            (status) => DropdownMenuItem(
-                              value: status.searchTypeEnum,
-                              child: Text(status.label),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) {
-                        provider.selectedSearchType.value = value;
-                        provider.searchController.clear();
-                      },
+                    return Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: DropdownButton<SalesSearchTypeEnum>(
+                        borderRadius: BorderRadius.circular(15),
+                        underline: SizedBox(),
+                        value: value,
+                        items: provider.searchTypeList
+                            .map(
+                              (status) => DropdownMenuItem(
+                                alignment: AlignmentDirectional.center,
+                                value: status.searchTypeEnum,
+                                child: Text(status.label),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          provider.selectedSearchType.value = value;
+                          provider.searchController.clear();
+                        },
+                      ),
                     );
                   },
                 )
@@ -230,90 +238,96 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                   },
                 ),
                 SizedBox(
-                  width: 30,
+                  width: 20,
                 ),
                 Expanded(
                   child: ValueListenableBuilder(
                     valueListenable: provider.selectedStatus,
                     builder: (context, status, child) {
-                      return DropdownButton<SaleStatusFilterEnum>(
-                        iconSize: 25,
-                        borderRadius: BorderRadius.circular(15),
-                        // padding: EdgeInsets.only(left: 16),
-                        elevation: 1,
-                        value: status,
-                        isExpanded: true,
-                        hint: Text("Status ",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        items: provider.statusFilterList
-                            .map(
-                              (status) => DropdownMenuItem(
-                                value: status.statusEnum,
-                                child: Text(status.label),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (status) {
-                          provider.selectedStatus.value = status;
-                          provider.callFilterApi();
-                        },
+                      return Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: DropdownButton<SaleStatusFilterEnum>(
+                          borderRadius: BorderRadius.circular(15),
+                          elevation: 7,
+                          underline: SizedBox(),
+                          value: status,
+                          isExpanded: true,
+                          hint: Text("Status ",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                          items: provider.statusFilterList
+                              .map(
+                                (status) => DropdownMenuItem(
+                                  alignment: AlignmentDirectional.center,
+                                  value: status.statusEnum,
+                                  child: Text(status.label),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (status) {
+                            provider.selectedStatus.value = status;
+                            provider.callFilterApi();
+                          },
+                        ),
                       );
                     },
                   ),
                 ),
-                provider.selectedStatus.value != null
-                    ? InkWell(
-                        borderRadius: BorderRadius.circular(20),
-                        onTap: () {
-                          provider.clearStatusFilter();
-                        },
-                        child: Icon(Icons.clear))
-                    : Container()
+
+                if (provider.selectedStatus.value != null)
+                  InkWell(
+                      onTap: () {
+                        provider.clearStatusFilter();
+                      },
+                      child: Icon(Icons.clear))
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Row(children: [
-              SizedBox(
-                width: 4,
-              ),
-              Expanded(
-                child: TextFormField(
-                  controller: provider.storeSearchController,
-                  onTap: () async {
-                    await showSearch(
-                        context: context,
-                        delegate: SalesStoreSearchDelegate(
-                            provider: provider, ref: ref));
-                  },
-                  // onChanged: (value) {
-                  //   if (value.isEmpty) {
-                  //     provider.storeListProvider.value = [];
-                  //     provider.storeCode = null;
-                  //     return;
-                  //   }
-                  //   provider.callStoreSearchApi(
-                  //       onSuccess: () {}, onFail: () {}, query: value);
-                  // },
-                  decoration: InputDecoration(
-                      hintText: "Store",
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(),
-                          borderRadius: BorderRadius.circular(40))),
-                ),
-              ),
-              InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: () {
-                    provider.clearStoreFilter();
-                  },
-                  child: Icon(Icons.clear)),
-              SizedBox(
-                width: 15,
-              ),
-            ]),
+            padding:
+                const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+            child: ValueListenableBuilder(
+              valueListenable: provider.storeCode,
+              builder: (context, value, child) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: provider.storeSearchController,
+                        onTap: () async {
+                          await showSearch(
+                              context: context,
+                              delegate: SalesStoreSearchDelegate(
+                                  provider: provider, ref: ref));
+                        },
+                        // onChanged: (value) {
+                        //   if (value.isEmpty) {
+                        //     provider.storeListProvider.value = [];
+                        //     provider.storeCode = null;
+                        //     return;
+                        //   }
+                        //   provider.callStoreSearchApi(
+                        //       onSuccess: () {}, onFail: () {}, query: value);
+                        // },
+                        decoration: InputDecoration(
+                            hintText: "Store",
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(),
+                                borderRadius: BorderRadius.circular(40))),
+                      ),
+                    ),
+                    if (value != null)
+                      IconButton(
+                          onPressed: () {
+                            provider.clearStoreFilter();
+                          },
+                          icon: Icon(Icons.clear))
+                  ],
+                );
+              },
+            ),
           ),
           // ValueListenableBuilder(
           //   valueListenable: provider.storeListProvider,

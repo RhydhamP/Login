@@ -46,7 +46,7 @@ class MyDrawer extends StatelessWidget {
               title: Text(
                 "DashBoard",
                 style: TextStyle(color: Colors.white),
-                textScaleFactor: 1.2,
+                textScaler: TextScaler.linear(1.2),
               ),
               onTap: () => Navigator.pushNamed(context, MyRoutes.homeRoute),
             ),
@@ -55,17 +55,27 @@ class MyDrawer extends StatelessWidget {
               title: Text(
                 "SalesOrder",
                 style: TextStyle(color: Colors.white),
-                textScaleFactor: 1.2,
+                textScaler: TextScaler.linear(1.2),
               ),
               onTap: () =>
                   Navigator.pushNamed(context, MyRoutes.salesOrderRoute),
+            ),
+            ListTile(
+              leading: Icon(Icons.history, color: Colors.white),
+              title: Text(
+                "Search History",
+                style: TextStyle(color: Colors.white),
+                textScaler: TextScaler.linear(1.25),
+              ),
+              onTap: () =>
+                  Navigator.pushNamed(context, MyRoutes.searchHistoryRoute),
             ),
             ListTile(
               leading: Icon(Icons.logout_outlined, color: Colors.white),
               title: Text(
                 "LogOut",
                 style: TextStyle(color: Colors.white),
-                textScaleFactor: 1.2,
+                textScaler: TextScaler.linear(1.2),
               ),
               onTap: () async {
                 // final SharedPreferences prefs =
