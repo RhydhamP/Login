@@ -16,7 +16,7 @@ class SearchHistoryResponse extends Equatable {
   @JsonKey(name: 'meta')
   final Meta meta;
 
-  SearchHistoryResponse(
+  const SearchHistoryResponse(
       {required this.code,
       required this.type,
       required this.message,
@@ -63,7 +63,7 @@ class SearchReport extends Equatable {
   @JsonKey(name: 'available_at_vendor')
   final String availableAtVendor;
 
-  SearchReport(
+  const SearchReport(
       {required this.date,
       required this.storeName,
       required this.storeCode,
@@ -116,7 +116,7 @@ class Meta extends Equatable {
   @JsonKey(name: 'current_page_record')
   final int currentPageRecord;
 
-  Meta({
+  const Meta({
     required this.currentPage,
     required this.perPage,
     required this.lastPage,

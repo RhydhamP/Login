@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:login/network/api/searchHistory_api.dart';
+import 'package:login/network/api/search_history_api.dart';
 
 class SearchHistoryRepository implements SearchHistoryApi {
   Dio dio;

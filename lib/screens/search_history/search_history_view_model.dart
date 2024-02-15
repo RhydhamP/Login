@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:login/base_view_model.dart';
 import 'package:login/models/history/history_search_model.dart';
-import 'package:login/repository/searchHistory_repository.dart';
+import 'package:login/repository/search_history_repository.dart';
 import 'package:login/utils/date_formatter.dart';
 
 import '../../models/search/product_search_model.dart';
 import '../../models/store/store_model.dart';
-import '../../repository/salesOrder_repository.dart';
+import '../../repository/sales_order_repository.dart';
 
 class SearchHistoryViewModel extends BaseViewModel {
   final SearchHistoryRepository searchHistoryRepository;
@@ -40,7 +40,7 @@ class SearchHistoryViewModel extends BaseViewModel {
         return res.products;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return [];
     }
   }
@@ -56,7 +56,7 @@ class SearchHistoryViewModel extends BaseViewModel {
         storeListProvider.value = res.data;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -91,7 +91,7 @@ class SearchHistoryViewModel extends BaseViewModel {
         searchHistoryListProvider.value = res.searchReport;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

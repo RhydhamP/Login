@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:login/models/add/add_product_model.dart';
 
 class AddModel4 {

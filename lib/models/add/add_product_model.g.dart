@@ -55,8 +55,8 @@ Map<String, dynamic> _$AddProductToJson(AddProduct instance) =>
     };
 
 ProductImage _$ProductImageFromJson(Map<String, dynamic> json) => ProductImage(
-      name: json['name'] as String?,
-      url: json['url'] as String?,
+      name: json['name'] as String,
+      url: json['url'] as String,
     );
 
 Map<String, dynamic> _$ProductImageToJson(ProductImage instance) =>

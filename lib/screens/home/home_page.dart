@@ -1,10 +1,8 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/provider/vm_provider.dart';
 import 'package:login/screens/home/home_delegate.dart';
-import 'package:login/utils/drawer_page.dart';
+import 'package:login/components/drawer_page.dart';
 
 // class HomePage extends StatefulWidget {
 //   const HomePage({super.key});
@@ -118,7 +116,7 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Welcome",
           textScaler: TextScaler.linear(1.15),
@@ -141,29 +139,44 @@ class HomePage extends ConsumerWidget {
             const SizedBox(
               height: 25,
             ),
-            TextFormField(
-              style: TextStyle(fontSize: 18),
-              controller: provider.searchController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(),
-                    borderRadius: BorderRadius.circular(35)),
-                hintText: "Search",
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(35)),
+              padding:
+                  const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      style: const TextStyle(fontSize: 18),
+                      controller: provider.searchController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Search",
+                      ),
+                      onTap: () async {
+                        await showSearch(
+                            context: context,
+                            delegate: ProductSearchDelegate(
+                                provider: provider, ref: ref));
+                      },
+                      // onChanged: (value) {
+                      //   if (value.isEmpty) {
+                      //     provider.productListProvider.value = [];
+                      //     return;
+                      //   }
+                      //   provider.callCheckAvailability(
+                      //       onSuccess: () {}, onFail: () {}, keyWord: value);
+                      // },
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () => provider.searchController.clear(),
+                    child: const Icon(Icons.clear),
+                  )
+                ],
               ),
-              onTap: () async {
-                await showSearch(
-                    context: context,
-                    delegate:
-                        ProductSearchDelegate(provider: provider, ref: ref));
-              },
-              // onChanged: (value) {
-              //   if (value.isEmpty) {
-              //     provider.productListProvider.value = [];
-              //     return;
-              //   }
-              //   provider.callCheckAvailability(
-              //       onSuccess: () {}, onFail: () {}, keyWord: value);
-              // },
             ),
             // ValueListenableBuilder(
             //   valueListenable: provider.productListProvider,
@@ -198,39 +211,54 @@ class HomePage extends ConsumerWidget {
             const SizedBox(
               height: 25,
             ),
-            TextFormField(
-              style: TextStyle(fontSize: 18),
-              controller: provider.quantityController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(),
-                    borderRadius: BorderRadius.circular(35)),
-                hintText: "Quantity",
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(35)),
+              padding:
+                  const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      style: const TextStyle(fontSize: 18),
+                      controller: provider.quantityController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Quantity",
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () => provider.quantityController.clear(),
+                    child: const Icon(Icons.clear),
+                  )
+                ],
               ),
             ),
             const SizedBox(
-              height: 22,
+              height: 25,
             ),
             Material(
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(side: BorderSide()),
+                style: ElevatedButton.styleFrom(side: const BorderSide()),
                 onPressed: () {
                   // print("Rhydham");
                   // addToList(ref, fillSearchWSCode, quantity, searchController);
                   provider.callAddToList(
                       onSuccess: () {},
                       onFail: () {},
-                      ws_code: provider.fillSearchWSCode.toString(),
+                      wsCode: provider.fillSearchWSCode.toString(),
                       quantity: provider.quantityController.text,
-                      search_keyword: provider.searchController.text);
+                      searchKeyword: provider.searchController.text);
 
                   // print("API sccuess");
                   provider.searchController.clear();
                   provider.quantityController.clear();
                 },
-                child: Text(
+                child: const Text(
                   "Search",
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 22),
                 ),
               ),
             ),
@@ -310,27 +338,27 @@ class HomePage extends ConsumerWidget {
                                 return DataRow(cells: [
                                   DataCell(Text(
                                     result.product.name,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   )),
                                   DataCell(Text(
                                     result.product.mrp.toString(),
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   )),
                                   DataCell(Text(
                                     result.availability.wsQuantity.toString(),
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   )),
                                   DataCell(Text(
                                     result.availability.wsRes == true
                                         ? "Available"
                                         : "Not Available",
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   )),
                                   DataCell(Text(
                                     result.availability.wsRes == false
                                         ? "Contact 9999999999"
                                         : "Available at Warehouse",
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   )),
                                   DataCell(ElevatedButton(
                                     child: const Icon(
@@ -363,7 +391,8 @@ class HomePage extends ConsumerWidget {
               builder: (context, addToListProvider, child) {
                 return addToListProvider.isNotEmpty
                     ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(side: BorderSide()),
+                        style:
+                            ElevatedButton.styleFrom(side: const BorderSide()),
                         onPressed: () {
                           provider.addToListProvider.value = [];
                           // ref.read(addProductProvider.notifier).state = [];
@@ -380,7 +409,7 @@ class HomePage extends ConsumerWidget {
           ],
         ),
       ),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
     );
   }
 }

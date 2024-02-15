@@ -14,7 +14,7 @@ class StoreResponse extends Equatable {
   @JsonKey(name: 'data')
   final List<Store> data;
 
-  StoreResponse({
+  const StoreResponse({
     required this.code,
     required this.type,
     required this.message,
@@ -39,7 +39,7 @@ class Store extends Equatable {
   @JsonKey(name: 'store_code')
   final String? storeCode;
 
-  Store({
+  const Store({
     required this.id,
     required this.name,
     required this.storeCode,

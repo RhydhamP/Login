@@ -1,10 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/provider/vm_provider.dart';
 import 'package:login/screens/search_history/search_history_delegate.dart';
-import 'package:login/utils/drawer_page.dart';
+import 'package:login/components/drawer_page.dart';
 
 class SearchHistoryPage extends ConsumerStatefulWidget {
   const SearchHistoryPage({super.key});
@@ -32,12 +30,12 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(children: [
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               Expanded(
@@ -46,7 +44,7 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
                   decoration: InputDecoration(
                       hintText: "Search By...",
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(),
+                          borderSide: const BorderSide(),
                           borderRadius: BorderRadius.circular(25))),
                   onTap: () async {
                     await showSearch(
@@ -56,21 +54,21 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               DropdownButton(
-                items: [DropdownMenuItem(child: Text("Product"))],
+                items: const [DropdownMenuItem(child: Text("Product"))],
                 onChanged: (value) {},
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               Expanded(
@@ -91,7 +89,7 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
                             decoration: InputDecoration(
                                 hintText: "Store",
                                 border: OutlineInputBorder(
-                                    borderSide: BorderSide(),
+                                    borderSide: const BorderSide(),
                                     borderRadius: BorderRadius.circular(40))),
                           ),
                         ),
@@ -100,13 +98,13 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
                               onPressed: () {
                                 provider.clearStoreFilter();
                               },
-                              icon: Icon(Icons.clear)),
+                              icon: const Icon(Icons.clear)),
                       ],
                     );
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               SizedBox(
@@ -118,13 +116,14 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
                       children: [
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                side: BorderSide(style: BorderStyle.solid)),
+                                side:
+                                    const BorderSide(style: BorderStyle.solid)),
                             onPressed: () async {
                               final pickedDate = await showDateRangePicker(
                                   context: context,
                                   initialDateRange: DateTimeRange(
                                       start: DateTime.now()
-                                          .subtract(Duration(days: 1)),
+                                          .subtract(const Duration(days: 1)),
                                       end: DateTime.now()),
                                   firstDate: DateTime(2022),
                                   lastDate: DateTime.now());
@@ -133,7 +132,7 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
                               provider.dateProvider.value = pickedDate;
                               provider.callSearchHistoryApi();
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.date_range_outlined,
                               size: 32,
                             )),
@@ -143,7 +142,7 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
                                 onTap: () {
                                   provider.clearDateFilter();
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   Icons.clear,
                                 ))
                             : Container(),
@@ -160,7 +159,7 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
-                    columns: <DataColumn>[
+                    columns: const <DataColumn>[
                       DataColumn(
                           label: Text(
                         "Date",
@@ -233,55 +232,55 @@ class _SearchHistoryPageState extends ConsumerState<SearchHistoryPage> {
                       return DataRow(cells: [
                         DataCell(Text(
                           result.date,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.productName,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.storeName ?? '',
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.storeCode ?? '',
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.packageType,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.packageSize.toString(),
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.searchKeyword,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.availableAtVendor,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.availableAtWarehouse,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.availableQty.toString(),
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.searchedQty.toString(),
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.mrp,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.tat,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                       ]);
                     }).toList()),

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/vm_provider.dart';
@@ -81,14 +79,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     vertical: 16.0, horizontal: 22.0),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                     TextFormField(
                       controller: provider.email,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(),
+                            borderSide: const BorderSide(),
                             borderRadius: BorderRadius.circular(25)),
                         hintText: "Email",
                         labelText: "Email",
@@ -103,7 +101,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         provider.email.text = value;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                     TextFormField(
@@ -111,7 +109,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       controller: provider.password,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(),
+                            borderSide: const BorderSide(),
                             borderRadius: BorderRadius.circular(25)),
                         hintText: "Password",
                         labelText: "Password",

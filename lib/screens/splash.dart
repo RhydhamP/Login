@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:login/local_store/local_database.dart';
@@ -15,7 +13,6 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    // TODO: implement initState
     // navigate();
     super.initState();
   }
@@ -27,7 +24,7 @@ class _SplashState extends State<Splash> {
 
     String token = await LocalDatabase().getAuthToken();
 
-    print("token==========================$token");
+    debugPrint("token==========================$token");
     if (token.isNotEmpty) {
       Navigator.pushNamed(context, MyRoutes.homeRoute);
     } else {
@@ -41,16 +38,20 @@ class _SplashState extends State<Splash> {
       onComplete: (controller) {
         navigate();
       },
-      effects: [
+      effects: const [
         // FadeEffect(duration: Duration(seconds: 2)),
         BlurEffect(duration: Duration(seconds: 2))
       ],
       child: AnimatedContainer(
         // height: 60,
         // width: 60,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         color: Colors.green,
-        child: Image.asset("assets/images/Logo.png",height: 60,width: 60,),
+        child: Image.asset(
+          "assets/images/Logo.png",
+          height: 60,
+          width: 60,
+        ),
       ),
     );
   }

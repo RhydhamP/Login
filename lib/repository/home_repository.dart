@@ -7,7 +7,6 @@ class HomeRepository implements CheckAvailability {
 
   @override
   Future<Response> checkAvailability(Map<String, dynamic> data) {
-    print(data);
     return dio.get("https://ecom.mkart.dev/api/v1/product/check-available",
         queryParameters: data);
   }
@@ -16,7 +15,6 @@ class HomeRepository implements CheckAvailability {
   Future addToList(Map<String, dynamic> body) async {
     // final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // ignore: unused_local_variable
     // final String? token = prefs.getString(authTokenKey);
     return dio.get("https://opsapi-v2.mkart.dev/api/v1/search/medicine-search",
         queryParameters: body);

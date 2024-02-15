@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:login/base_view_model.dart';
-import 'package:login/models/sales/filter_searchType_model.dart';
+import 'package:login/models/sales/filter_search_type_model.dart';
 import 'package:login/models/sales/sales_model.dart';
 import 'package:login/models/store/store_model.dart';
-import 'package:login/repository/salesOrder_repository.dart';
+import 'package:login/repository/sales_order_repository.dart';
 import 'package:login/utils/date_formatter.dart';
 import '../../enum/sale_filter_enum.dart';
 import '../../enum/sales_search_type_enum.dart';
@@ -80,7 +80,7 @@ class SalesOrderViewModel extends BaseViewModel {
         salesOrderItemsProvider.value = res.salesOrderItem;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -96,7 +96,7 @@ class SalesOrderViewModel extends BaseViewModel {
         return res.products;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return [];
     }
   }
@@ -112,7 +112,7 @@ class SalesOrderViewModel extends BaseViewModel {
         storeListProvider.value = res.data;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

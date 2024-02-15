@@ -17,7 +17,7 @@ class SalesOrderResponse extends Equatable {
   @JsonKey(name: 'meta')
   final Meta meta;
 
-  SalesOrderResponse({
+  const SalesOrderResponse({
     required this.code,
     required this.type,
     required this.message,
@@ -63,7 +63,7 @@ class SalesOrderItem extends Equatable {
   @JsonKey(name: 'remark')
   final String remark;
 
-  SalesOrderItem({
+  const SalesOrderItem({
     required this.productCode,
     required this.wsCode,
     required this.productName,
@@ -115,7 +115,7 @@ class Meta extends Equatable {
   @JsonKey(name: 'current_page_record')
   final int currentPageRecord;
 
-  Meta({
+  const Meta({
     required this.currentPage,
     required this.perPage,
     required this.lastPage,

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/screens/home/home_view_model.dart';
@@ -18,7 +16,7 @@ class ProductSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 
@@ -28,7 +26,7 @@ class ProductSearchDelegate extends SearchDelegate {
         onPressed: () {
           Navigator.pushNamed(context, MyRoutes.homeRoute);
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
   }
 
   @override
@@ -50,15 +48,15 @@ class ProductSearchDelegate extends SearchDelegate {
                 },
                 title: Text(
                   value[index].name.toString(),
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                 ),
                 subtitle: Text(
                   "WS_Code : ${value[index].wsCode.toString()}",
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 ),
                 trailing: Text(
                   "M.R.P :-  ${value[index].wsCode.toString()}",
-                  style: TextStyle(fontSize: 13),
+                  style: const TextStyle(fontSize: 13),
                 ),
               );
             },

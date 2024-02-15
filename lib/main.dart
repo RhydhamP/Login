@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/screens/home/home_page.dart';
@@ -24,10 +22,10 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/": (context) => const Splash(),
-        MyRoutes.loginRoute: (context) => LoginPage(),
-        MyRoutes.homeRoute: (context) => HomePage(),
-        MyRoutes.salesOrderRoute: (context) => SalesOrderPage(),
-        MyRoutes.searchHistoryRoute: (context) => SearchHistoryPage()
+        MyRoutes.loginRoute: (context) => const LoginPage(),
+        MyRoutes.homeRoute: (context) => const HomePage(),
+        MyRoutes.salesOrderRoute: (context) => const SalesOrderPage(),
+        MyRoutes.searchHistoryRoute: (context) => const SearchHistoryPage()
       },
     );
   }

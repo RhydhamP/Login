@@ -16,7 +16,7 @@ class Add extends Equatable {
   @JsonKey(name: 'Availability')
   final Availability availability;
 
-  Add(
+  const Add(
       {required this.code,
       required this.type,
       required this.message,
@@ -56,7 +56,7 @@ class AddProduct extends Equatable {
   @JsonKey(name: 'ws_code')
   final int wsCode;
 
-  AddProduct({
+  const AddProduct({
     required this.id,
     required this.name,
     required this.isBanned,
@@ -94,11 +94,11 @@ class AddProduct extends Equatable {
 @JsonSerializable()
 class ProductImage extends Equatable {
   @JsonKey(name: 'name')
-  final String? name;
+  final String name;
   @JsonKey(name: 'url')
-  final String? url;
+  final String url;
 
-  ProductImage({
+  const ProductImage({
     required this.name,
     required this.url,
   });
@@ -121,7 +121,7 @@ class Availability extends Equatable {
   @JsonKey(name: 'pharmaRes')
   final bool? pharmaRes;
 
-  Availability({
+  const Availability({
     required this.wsRes,
     required this.wsQuantity,
     required this.pharmaRes,

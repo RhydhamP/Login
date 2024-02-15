@@ -34,7 +34,7 @@ class HomeViewModel extends BaseViewModel {
         onSuccess.call();
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       onFail.call();
     }
   }
@@ -42,24 +42,25 @@ class HomeViewModel extends BaseViewModel {
   callAddToList(
       {required Function onSuccess,
       required Function onFail,
-      required String ws_code,
+      required String wsCode,
       required String quantity,
-      required String search_keyword}) async {
+      required String searchKeyword}) async {
     try {
       // print("query $ws_code $quantity $search_keyword");
       await homeRepository.addToList({
-        'ws_code': ws_code,
+        'ws_code': wsCode,
         'quantity': quantity,
-        'search_keyword': search_keyword
+        'search_keyword': searchKeyword
       }).then((reponse) async {
-        print(reponse.data);
+        // debugPrint(reponse.data); // it will not work.
         final res = Add.fromJson(reponse.data);
         final searchResult =
             AddModel4(product: res.product, availability: res.availability);
         addToListProvider.value = [...addToListProvider.value, searchResult];
+        // print("scuuucccsusussuussu----------${searchResult}");
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

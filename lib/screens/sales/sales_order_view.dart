@@ -1,9 +1,7 @@
-// ignore_for_file: prefer_const_constructors, deprecated_member_use, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/provider/vm_provider.dart';
-import 'package:login/utils/drawer_page.dart';
+import 'package:login/components/drawer_page.dart';
 import 'package:login/screens/sales/sales_delegate.dart';
 import '../../enum/sale_filter_enum.dart';
 import '../../enum/sales_search_type_enum.dart';
@@ -22,8 +20,8 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text(
           "Sales Order",
           textScaler: TextScaler.linear(1.15),
           style: TextStyle(color: Colors.white),
@@ -34,71 +32,87 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(children: [
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 4,
                 ),
                 Expanded(
                     child: ValueListenableBuilder(
                   valueListenable: provider.selectedSearchType,
                   builder: (context, searchType, child) {
-                    return TextFormField(
-                      onTap: () async {
-                        if (searchType == SalesSearchTypeEnum.product) {
-                          await showSearch(
-                              context: context,
-                              delegate: SalesProductSearchDelegate(
-                                  provider: provider, ref: ref));
-                        }
-                      },
-                      onChanged: (value) {
-                        provider.callFilterApi();
+                    return Container(
+                      padding: const EdgeInsets.only(
+                          left: 8, right: 8, top: 4, bottom: 4),
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              onTap: () async {
+                                if (searchType == SalesSearchTypeEnum.product) {
+                                  await showSearch(
+                                      context: context,
+                                      delegate: SalesProductSearchDelegate(
+                                          provider: provider, ref: ref));
+                                }
+                              },
+                              onChanged: (value) {
+                                provider.callFilterApi();
 
-                        // if (value.isEmpty) {
-                        //   provider.productListProvider.value = [];
-                        //   return;
-                        // }
-                        // if (provider.dropDownValue1 == "Product") {
-                        //   provider.callProductSearchApi(
-                        //       onSuccess: () {}, onFail: () {}, query: value);
-                        // } else
+                                // if (value.isEmpty) {
+                                //   provider.productListProvider.value = [];
+                                //   return;
+                                // }
+                                // if (provider.dropDownValue1 == "Product") {
+                                //   provider.callProductSearchApi(
+                                //       onSuccess: () {}, onFail: () {}, query: value);
+                                // } else
 
-                        // if (provider.selectedSearchType.value ==
-                        //     SalesSearchTypeEnum.so) {
-                        //   if (provider.isDateSelected &&
-                        //       provider.storeSearchController.text.isNotEmpty) {
-                        //     provider.callSODateStoreFilterApi(
-                        //         onSuccess: () {}, onFail: () {});
-                        //   } else if (provider.isDateSelected) {
-                        //     provider.callSODateFilterApi(
-                        //         onSuccess: () {}, onFail: () {});
-                        //   } else if (provider
-                        //       .storeSearchController.text.isNotEmpty) {
-                        //     provider.callSOStoreFilterApi(
-                        //         onSuccess: () {}, onFail: () {});
-                        //   } else {
-                        //     provider.callSOFilterApi(value);
-                        //   }
-                        // }
-                      },
-                      controller: provider.searchController,
-                      decoration: InputDecoration(
-                          hintText: searchType == SalesSearchTypeEnum.product
-                              ? "Search By Product Name"
-                              : "Search By SO Number",
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(),
-                              borderRadius: BorderRadius.circular(40))),
+                                // if (provider.selectedSearchType.value ==
+                                //     SalesSearchTypeEnum.so) {
+                                //   if (provider.isDateSelected &&
+                                //       provider.storeSearchController.text.isNotEmpty) {
+                                //     provider.callSODateStoreFilterApi(
+                                //         onSuccess: () {}, onFail: () {});
+                                //   } else if (provider.isDateSelected) {
+                                //     provider.callSODateFilterApi(
+                                //         onSuccess: () {}, onFail: () {});
+                                //   } else if (provider
+                                //       .storeSearchController.text.isNotEmpty) {
+                                //     provider.callSOStoreFilterApi(
+                                //         onSuccess: () {}, onFail: () {});
+                                //   } else {
+                                //     provider.callSOFilterApi(value);
+                                //   }
+                                // }
+                              },
+                              controller: provider.searchController,
+                              decoration: InputDecoration(
+                                  hintText:
+                                      searchType == SalesSearchTypeEnum.product
+                                          ? "Search By Product Name"
+                                          : "Search By SO Number",
+                                  border: InputBorder.none),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => provider.searchController.clear(),
+                            child: const Icon(Icons.clear),
+                          )
+                        ],
+                      ),
                     );
                   },
                 )),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 ValueListenableBuilder(
@@ -110,7 +124,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                           borderRadius: BorderRadius.circular(10)),
                       child: DropdownButton<SalesSearchTypeEnum>(
                         borderRadius: BorderRadius.circular(15),
-                        underline: SizedBox(),
+                        underline: const SizedBox(),
                         value: value,
                         items: provider.searchTypeList
                             .map(
@@ -182,7 +196,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
             padding: const EdgeInsets.all(12.0),
             child: Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 // SfDateRangePicker(
@@ -202,13 +216,14 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                       children: [
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                side: BorderSide(style: BorderStyle.solid)),
+                                side:
+                                    const BorderSide(style: BorderStyle.solid)),
                             onPressed: () async {
                               final pickedDate = await showDateRangePicker(
                                   context: context,
                                   initialDateRange: DateTimeRange(
                                       start: DateTime.now()
-                                          .subtract(Duration(days: 1)),
+                                          .subtract(const Duration(days: 1)),
                                       end: DateTime.now()),
                                   firstDate: DateTime(2022),
                                   lastDate: DateTime.now());
@@ -219,7 +234,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                               // provider.isDateSelected = true;
                               provider.callFilterApi();
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.date_range_outlined,
                               size: 32,
                             )),
@@ -229,7 +244,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                                 onTap: () {
                                   provider.clearDateFilter();
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   Icons.clear,
                                 ))
                             : Container(),
@@ -237,51 +252,56 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                     );
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 Expanded(
                   child: ValueListenableBuilder(
                     valueListenable: provider.selectedStatus,
                     builder: (context, status, child) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: DropdownButton<SaleStatusFilterEnum>(
-                          borderRadius: BorderRadius.circular(15),
-                          elevation: 7,
-                          underline: SizedBox(),
-                          value: status,
-                          isExpanded: true,
-                          hint: Text("Status ",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                          items: provider.statusFilterList
-                              .map(
-                                (status) => DropdownMenuItem(
-                                  alignment: AlignmentDirectional.center,
-                                  value: status.statusEnum,
-                                  child: Text(status.label),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (status) {
-                            provider.selectedStatus.value = status;
-                            provider.callFilterApi();
-                          },
-                        ),
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: DropdownButton<SaleStatusFilterEnum>(
+                                borderRadius: BorderRadius.circular(15),
+                                underline: const SizedBox(),
+                                value: status,
+                                isExpanded: true,
+                                hint: const Text("Status ",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                items: provider.statusFilterList
+                                    .map(
+                                      (status) => DropdownMenuItem(
+                                        alignment: AlignmentDirectional.center,
+                                        value: status.statusEnum,
+                                        child: Text(status.label),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (status) {
+                                  provider.selectedStatus.value = status;
+                                  provider.callFilterApi();
+                                },
+                              ),
+                            ),
+                          ),
+                          if (provider.selectedStatus.value != null)
+                            InkWell(
+                                onTap: () {
+                                  provider.clearStatusFilter();
+                                },
+                                child: const Icon(Icons.clear))
+                        ],
                       );
                     },
                   ),
                 ),
-
-                if (provider.selectedStatus.value != null)
-                  InkWell(
-                      onTap: () {
-                        provider.clearStatusFilter();
-                      },
-                      child: Icon(Icons.clear))
               ],
             ),
           ),
@@ -314,7 +334,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                         decoration: InputDecoration(
                             hintText: "Store",
                             border: OutlineInputBorder(
-                                borderSide: BorderSide(),
+                                borderSide: const BorderSide(),
                                 borderRadius: BorderRadius.circular(40))),
                       ),
                     ),
@@ -323,7 +343,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                           onPressed: () {
                             provider.clearStoreFilter();
                           },
-                          icon: Icon(Icons.clear))
+                          icon: const Icon(Icons.clear))
                   ],
                 );
               },
@@ -383,7 +403,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
               onPressed: () {
                 provider.clearAllFilter();
               },
-              child: Text(
+              child: const Text(
                 "Clear Filter",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               )),
@@ -394,7 +414,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
                     // border: TableBorder.symmetric(outside: BorderSide(), inside: BorderSide()),
-                    columns: <DataColumn>[
+                    columns: const <DataColumn>[
                       DataColumn(
                           label: Text(
                         "Product Name",
@@ -447,39 +467,39 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
                       return DataRow(cells: [
                         DataCell(Text(
                           result.productName,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.storeName,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.soNumber,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.soDate,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.docNumber.toString(),
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.orderedQuantity.toString(),
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.fulfilledQuantity.toString(),
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.status,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                         DataCell(Text(
                           result.remark,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         )),
                       ]);
                     }).toList()),
@@ -488,7 +508,7 @@ class _SalesOrderPageState extends ConsumerState<SalesOrderPage> {
           )
         ]),
       ),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
     );
   }
 }

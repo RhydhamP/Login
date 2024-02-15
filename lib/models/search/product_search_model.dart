@@ -16,7 +16,7 @@ class Search extends Equatable {
   // @JsonKey(name: 'Availability')
   // final Availability availability;
 
-  Search(
+  const Search(
       {required this.code,
       required this.type,
       required this.message,
@@ -55,7 +55,7 @@ class Product extends Equatable {
   @JsonKey(name: 'ws_code')
   final int wsCode;
 
-  Product({
+  const Product({
     required this.id,
     required this.name,
     required this.isBanned,
@@ -97,7 +97,7 @@ class ProductImage extends Equatable {
   @JsonKey(name: 'url')
   final String? url;
 
-  ProductImage({
+  const ProductImage({
     required this.name,
     required this.url,
   });

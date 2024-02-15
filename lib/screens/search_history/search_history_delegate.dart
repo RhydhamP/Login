@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/screens/search_history/search_history_view_model.dart';
@@ -19,17 +17,13 @@ class SearchHistoryProductSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          Navigator.pushNamed(context, MyRoutes.salesOrderRoute);
-        },
-        icon: Icon(Icons.arrow_back));
+    return const BackButton();
   }
 
   @override
@@ -54,15 +48,15 @@ class SearchHistoryProductSearchDelegate extends SearchDelegate {
                 },
                 title: Text(
                   value[index].name.toString(),
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                 ),
                 subtitle: Text(
                   "WS_Code : ${value[index].wsCode.toString()}",
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 ),
                 trailing: Text(
                   "M.R.P :-  ${value[index].wsCode.toString()}",
-                  style: TextStyle(fontSize: 13),
+                  style: const TextStyle(fontSize: 13),
                 ),
               );
             },
@@ -96,7 +90,7 @@ class SearchHistoryStoreSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 
@@ -106,7 +100,7 @@ class SearchHistoryStoreSearchDelegate extends SearchDelegate {
         onPressed: () {
           Navigator.pushNamed(context, MyRoutes.searchHistoryRoute);
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
   }
 
   @override
@@ -135,7 +129,7 @@ class SearchHistoryStoreSearchDelegate extends SearchDelegate {
                 },
                 title: Text(
                   value[index].name.toString(),
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                 ),
               );
             },

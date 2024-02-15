@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/screens/sales/sales_order_view_model.dart';
@@ -18,7 +16,7 @@ class SalesProductSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 
@@ -28,7 +26,7 @@ class SalesProductSearchDelegate extends SearchDelegate {
         onPressed: () {
           Navigator.pushNamed(context, MyRoutes.salesOrderRoute);
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
   }
 
   @override
@@ -68,15 +66,15 @@ class SalesProductSearchDelegate extends SearchDelegate {
                 },
                 title: Text(
                   value[index].name.toString(),
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                 ),
                 subtitle: Text(
                   "WS_Code : ${value[index].wsCode.toString()}",
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 ),
                 trailing: Text(
                   "M.R.P :-  ${value[index].wsCode.toString()}",
-                  style: TextStyle(fontSize: 13),
+                  style: const TextStyle(fontSize: 13),
                 ),
               );
             },
@@ -110,7 +108,7 @@ class SalesStoreSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 
@@ -120,7 +118,7 @@ class SalesStoreSearchDelegate extends SearchDelegate {
         onPressed: () {
           Navigator.pushNamed(context, MyRoutes.salesOrderRoute);
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
   }
 
   @override
@@ -173,7 +171,7 @@ class SalesStoreSearchDelegate extends SearchDelegate {
                 },
                 title: Text(
                   value[index].name.toString(),
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                 ),
               );
             },
