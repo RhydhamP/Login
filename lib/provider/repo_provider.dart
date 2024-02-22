@@ -5,6 +5,8 @@ import 'package:login/repository/login_repository.dart';
 import 'package:login/repository/sales_order_repository.dart';
 import 'package:login/repository/search_history_repository.dart';
 
+import '../repository/home_delivery_repository.dart';
+
 final loginRepository =
     StateProvider((ref) => LoginRepository(dio: ref.watch(dioProvider)));
 
@@ -16,3 +18,6 @@ final salesOrderRepository =
 
 final searchHistoryRepository = StateProvider(
     (ref) => SearchHistoryRepository(dio: ref.watch(dioProvider)));
+
+final homeDeliveryRepository = StateProvider(
+    (ref) => HomeDeliveryReppository(dio: ref.watch(dioProvider)));

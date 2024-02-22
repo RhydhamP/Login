@@ -71,6 +71,16 @@ class MyDrawer extends StatelessWidget {
                   Navigator.pushNamed(context, MyRoutes.searchHistoryRoute),
             ),
             ListTile(
+              leading: Icon(Icons.history, color: Colors.white),
+              title: Text(
+                "Home Delivery",
+                style: TextStyle(color: Colors.white),
+                textScaler: TextScaler.linear(1.25),
+              ),
+              onTap: () =>
+                  Navigator.pushNamed(context, MyRoutes.homeDeliveryRoute),
+            ),
+            ListTile(
               leading: Icon(Icons.logout_outlined, color: Colors.white),
               title: Text(
                 "LogOut",
